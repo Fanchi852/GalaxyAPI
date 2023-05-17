@@ -46,7 +46,7 @@ public class CoreDAO {
         PlanetType planetType = new PlanetType();
         planetType.setPlanetTypeId(resultset.getInt("type"));
         res.setPlanetType(planetType);
-        res.setCoordinates(resultset.getInt("coordinates"));
+        res.setCoordinates(resultset.getString("coordinates"));
         Imperium imperiumAUX = new Imperium();
         imperiumAUX.setImperiumId(resultset.getInt("owner"));
         res.setImperium(imperiumAUX);

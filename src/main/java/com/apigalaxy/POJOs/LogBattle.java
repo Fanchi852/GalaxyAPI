@@ -99,6 +99,11 @@ public class LogBattle {
     public void setDate(Timestamp date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "LogBattle{" + "logBattleId=" + logBattleId + ", totalNormal=" + totalNormal + ", totalRare=" + totalRare + ", atkFleet=" + atkFleet + ", defFleet=" + defFleet + ", victory=" + victory + ", date=" + date + '}';
+    }
     
     
     

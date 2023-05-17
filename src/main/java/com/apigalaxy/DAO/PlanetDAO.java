@@ -10,6 +10,7 @@ import com.apigalaxy.POJOs.Planet;
 import com.apigalaxy.POJOs.PlanetType;
 import com.apigalaxy.POJOs.Resources;
 import com.apigalaxy.POJOs.StarSystem;
+import com.apigalaxy.routines.Routines;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,7 +68,7 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
             statement.setString(1, planet.getName());
             statement.setInt(2, planet.getParcels());
             statement.setInt(3, planet.getPlanetType().getPlanetTypeId());
-            statement.setInt(4, planet.getCoordinates());
+            statement.setString(4, planet.getCoordinates());
             statement.setInt(5, planet.getImperium().getImperiumId());
             statement.setString(6, planet.getStrResource().name());
             statement.setInt(7, planet.getNormalOreProduction());
@@ -108,6 +109,13 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
 
     @Override
     public List findBy(Map<String, String[]> filter) {
+        //intentaremos traer los datos actualizados de los recursos del planeta si es que tenemos el id
+        ResourcesDAO resourcesDAO = new ResourcesDAO();
+        try{
+            resourcesDAO.quantity_resources_update(Integer.parseInt(filter.get("planet_id")[0]));
+        }catch(Exception error){
+            //Logger.getLogger(PlanetDAO.class.getName()).log(Level.SEVERE, "error controlado y esperable por NullPointerException: ", error);
+        }
         //creamos una lista para devolver en la que introduciremos los usuarios encontrados
         List<Planet> planets = new ArrayList<>();
         //Inicializar las variables de control para construir la cláusula WHERE
@@ -159,11 +167,20 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
                 Planet newPlanet = new Planet();
                 //Establecemos los valores de las propiedades usando los datos de la fila del ResultSet
                 newPlanet.setPlanetId(res.getInt("planet_id"));
+                //ahora que tenemos elid de seguro volvemos a actualizar los recursos del planeta para ala proxima vez
+                try{
+                    resourcesDAO.quantity_resources_update(newPlanet.getPlanetId());
+                }catch(Exception error){
+                    //Logger.getLogger(PlanetDAO.class.getName()).log(Level.SEVERE, "error controlado y esperable por NullPointerException: ", error);
+                }
                 newPlanet.setName(res.getString("name"));
-                PlanetType planetType = new PlanetType();
-                planetType.setPlanetTypeId(res.getInt("type"));
+                newPlanet.setParcels(res.getInt("parcels"));
+                PlanetTypeDAO ptDAO = new PlanetTypeDAO();
+                Routines routines = new Routines();
+                List<PlanetType> ptlist = ptDAO.findBy(routines.constructMap("planetType_id", res.getString("type")));
+                PlanetType planetType = ptlist.get(0);
                 newPlanet.setPlanetType(planetType);
-                newPlanet.setCoordinates(res.getInt("coordinates"));
+                newPlanet.setCoordinates(res.getString("coordinates"));
                 Imperium imperium = new Imperium();
                 imperium.setImperiumId(res.getInt("owner"));
                 newPlanet.setImperium(imperium);
@@ -172,8 +189,8 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
                 newPlanet.setRareOreProduction(res.getInt("rare_ore_production"));
                 newPlanet.setPopulation_changes(res.getInt("population_changes"));
                 newPlanet.setCientific_data_changes(res.getInt("cientific_data_changes"));
-                Resources resources = new Resources();
-                resources.setResourceId(res.getInt("resources"));
+                List<Resources> resourcesList = resourcesDAO.findBy(routines.constructMap("resources_id", res.getString("resources")));
+                Resources resources = resourcesList.get(0);
                 newPlanet.setResources(resources);
                 StarSystem starsystem = new StarSystem();
                 starsystem.setStarId(res.getInt("star"));
@@ -188,9 +205,9 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
     }
 
     @Override
-    public Boolean update(Planet planet) {
+    public Integer update(Planet planet) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             //preparamos y ejecutamos la sentencia almacenando y devolviendo la respuesta
@@ -198,7 +215,7 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
             statement.setString(1, planet.getName());
             statement.setInt(2, planet.getParcels());
             statement.setInt(3, planet.getPlanetType().getPlanetTypeId());
-            statement.setInt(4, planet.getCoordinates());
+            statement.setString(4, planet.getCoordinates());
             statement.setInt(5, planet.getImperium().getImperiumId());
             statement.setString(6, planet.getStrResource().name());
             statement.setInt(7, planet.getNormalOreProduction());
@@ -209,10 +226,23 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
             statement.setInt(12, planet.getStar().getStarId());
             statement.setInt(13, planet.getPlanetId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(PlanetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return res;
+    }
+    
+    public void prductionUpdate(Planet planet){
+        
+        String CALL = "call terminate_build_parcel("+planet.getPlanetId()+");";
+        System.out.println("llamando a terminate_build_parcel: "+CALL);
+        
+        try{
+            PreparedStatement statement = connection.prepareStatement(CALL);
+            statement.executeQuery();
+        }catch(SQLException ex){
+            Logger.getLogger(PlanetDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

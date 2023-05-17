@@ -150,6 +150,7 @@ public class PlanetTypeDAO implements com.apigalaxy.interfaces.IDAO<PlanetType, 
                 //Creamos nuevos objetos TechnologyImperium, Imperium y Technology. 
                 PlanetType newPlanetType = new PlanetType();
                 //Establecemos los valores de las propiedades usando los datos de la fila del ResultSet
+                newPlanetType.setPlanetTypeId(res.getInt("planetType_id"));
                 newPlanetType.setName(res.getString("name"));
                 newPlanetType.setDescription(res.getString("descripcion"));
                 newPlanetType.setpLive(res.getFloat("p_live"));
@@ -172,9 +173,9 @@ public class PlanetTypeDAO implements com.apigalaxy.interfaces.IDAO<PlanetType, 
     }
 
     @Override
-    public Boolean update(PlanetType planetType) {
+    public Integer update(PlanetType planetType) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             //preparamos y ejecutamos la sentencia almacenando y devolviendo la respuesta
@@ -189,7 +190,7 @@ public class PlanetTypeDAO implements com.apigalaxy.interfaces.IDAO<PlanetType, 
             statement.setString(8, planetType.getImage());
             statement.setInt(9, planetType.getPlanetTypeId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(PlanetTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -83,5 +83,10 @@ public class Resources {
         this.population_capacity = population_capacity;
     }
 
+    @Override
+    public String toString() {
+        return "Resources{" + "resourceId=" + resourceId + ", normal_quantity=" + normal_quantity + ", rare_quantity=" + rare_quantity + ", population_quantity=" + population_quantity + ", normal_capacity=" + normal_capacity + ", rare_capacity=" + rare_capacity + ", population_capacity=" + population_capacity + '}';
+    }
+
     
 }

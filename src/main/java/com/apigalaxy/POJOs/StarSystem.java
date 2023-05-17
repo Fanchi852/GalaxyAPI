@@ -57,5 +57,10 @@ public class StarSystem {
     public void setHabitability(Float habitability) {
         this.habitability = habitability;
     }
+
+    @Override
+    public String toString() {
+        return "StarSystem{" + "starId=" + starId + ", name=" + name + ", description=" + description + ", habitability=" + habitability + '}';
+    }
     
 }

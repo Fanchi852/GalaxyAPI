@@ -67,6 +67,11 @@ public class LogBattleTechnology {
     public void setLogBattle(LogBattle logBattle) {
         this.logBattle = logBattle;
     }
+
+    @Override
+    public String toString() {
+        return "LogBattleTechnology{" + "LogBattleTechnologyId=" + LogBattleTechnologyId + ", level=" + level + ", imperium=" + imperium + ", technology=" + technology + ", logBattle=" + logBattle + '}';
+    }
     
     
     

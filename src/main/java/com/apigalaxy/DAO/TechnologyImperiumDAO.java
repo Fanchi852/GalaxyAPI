@@ -6,8 +6,10 @@ package com.apigalaxy.DAO;
 
 import com.apigalaxy.DAOFactory.MysqlDAOFactory;
 import com.apigalaxy.POJOs.Imperium;
+import com.apigalaxy.POJOs.Planet;
 import com.apigalaxy.POJOs.Technology;
 import com.apigalaxy.POJOs.TechnologyImperium;
+import com.apigalaxy.POJOs.TechnologyView;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -160,9 +162,9 @@ public class TechnologyImperiumDAO implements com.apigalaxy.interfaces.IDAO<Tech
    }
 
     @Override
-    public Boolean update(TechnologyImperium technologyImperium) {
+    public Integer update(TechnologyImperium technologyImperium) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             //preparamos y ejecutamos la sentencia almacenando y devolviendo la respuesta
@@ -172,12 +174,48 @@ public class TechnologyImperiumDAO implements com.apigalaxy.interfaces.IDAO<Tech
             statement.setInt(3, technologyImperium.getTechnology().getTechnologyId());
             statement.setInt(4, technologyImperium.getTechnologyImperiumId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(TechnologyImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return res;
+    }
+    
+    public List technologyList(Imperium imperium){
+        //creamos una lista para devolver en la que introduciremos los usuarios encontrados
+        List<TechnologyView> technologyViews = new ArrayList<>();
+        String CALL = "call imperium_technologies("+imperium.getImperiumId()+");";
+        System.out.println("llamando a imperium_technologies: "+CALL);
+        
+        try {
+            //preparamos la sentenci
+            PreparedStatement statement;
+            statement = connection.prepareStatement(CALL);
+            
+            //Ejecutar la consulta y almacenar los resultados en un objeto ResultSet
+            ResultSet res = statement.executeQuery();
+            // vamos almacenando las respuestas ya sea una sola o una lista y devolvemos las respuestas en una lista.
+            //Iteramos sobre el ResultSet para procesar cada fila
+            while (res.next()){
+                //Creamos nuevos objetos.
+                TechnologyView techView = new TechnologyView();
+                //Establecemos los valores de las propiedades usando los datos de la fila del ResultSet
+                techView.setTechnology_imperium_id(res.getInt("technology_imperium_id"));
+                techView.setLevel(res.getInt("level"));
+                techView.setName(res.getString("name"));
+                techView.setDescripcion(res.getString("descripcion"));
+                techView.setType(res.getString("type"));
+                techView.setBono(res.getFloat("bono"));
+                techView.setBasic_cost(res.getInt("basic_cost"));
+                techView.setImage(res.getString("image"));
+                //Añadir el objeto TechnologyImperium a la lista technologyImperiums
+                technologyViews.add(techView);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TechnologyImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return technologyViews; 
     }
     
 }

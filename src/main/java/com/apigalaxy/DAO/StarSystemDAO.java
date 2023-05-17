@@ -138,7 +138,7 @@ public class StarSystemDAO implements com.apigalaxy.interfaces.IDAO<StarSystem, 
                 //Establecemos los valores de las propiedades usando los datos de la fila del ResultSet
                 newStarSystem.setStarId(res.getInt("star_id"));
                 newStarSystem.setName(res.getString("name"));
-                newStarSystem.setDescription(res.getString("descripcion"));
+                newStarSystem.setDescription(res.getString("description"));
                 newStarSystem.setHabitability(res.getFloat("habitability"));
                 //Añadir el objeto TechnologyImperium a la lista technologyImperiums
                 StarSystems.add(newStarSystem);
@@ -150,9 +150,9 @@ public class StarSystemDAO implements com.apigalaxy.interfaces.IDAO<StarSystem, 
     }
 
     @Override
-    public Boolean update(StarSystem starSystem) {
+    public Integer update(StarSystem starSystem) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             //preparamos y ejecutamos la sentencia almacenando y devolviendo la respuesta
@@ -162,7 +162,7 @@ public class StarSystemDAO implements com.apigalaxy.interfaces.IDAO<StarSystem, 
             statement.setFloat(3, starSystem.getHabitability());
             statement.setInt(4, starSystem.getStarId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(StarSystemDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

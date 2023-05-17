@@ -16,14 +16,24 @@ public class Imperium {
     private Integer imperiumId, cientificData;
     private String name;
     private User user;
+    private Planet planet;
 
     public Imperium() {
     }
 
-    public Imperium(String name, User user,Integer cientificData) {
+    public Imperium(Planet planet, String name, User user,Integer cientificData) {
         this.name = name;
         this.user = user;
         this.cientificData = cientificData;
+        this.planet = planet;
+    }
+
+    public Planet getPlanet() {
+        return planet;
+    }
+
+    public void setPlanet(Planet planet) {
+        this.planet = planet;
     }
 
     public Integer getCientificData() {
@@ -56,6 +66,11 @@ public class Imperium {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Imperium{" + "imperiumId=" + imperiumId + ", cientificData=" + cientificData + ", capital=" + planet + ", name=" + name + ", user=" + user + '}';
     }
     
     

@@ -6,6 +6,7 @@ package com.apigalaxy.DAO;
 
 import com.apigalaxy.POJOs.Resources;
 import com.apigalaxy.DAOFactory.MysqlDAOFactory;
+import com.apigalaxy.POJOs.Planet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -160,9 +161,9 @@ public class ResourcesDAO implements com.apigalaxy.interfaces.IDAO<Resources, Ma
     }
 
     @Override
-    public Boolean update(Resources resources) {
+    public Integer update(Resources resources) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             // usamos la conexxion para preparar el statment 
@@ -175,7 +176,7 @@ public class ResourcesDAO implements com.apigalaxy.interfaces.IDAO<Resources, Ma
             statement.setInt(6, resources.getPopulation_capacity());
             statement.setInt(7, resources.getResourceId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(ResourcesDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -183,4 +184,15 @@ public class ResourcesDAO implements com.apigalaxy.interfaces.IDAO<Resources, Ma
         return res;
     }
     
+    public void quantity_resources_update(Integer planetId){
+        
+        try {
+            // usamos la conexxion para preparar el statment 
+            PreparedStatement statement = connection.prepareStatement("call quantity_resources_update("+planetId+")", Statement.RETURN_GENERATED_KEYS);
+            
+            statement.executeQuery();
+        } catch (SQLException ex){
+            Logger.getLogger(ResourcesDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

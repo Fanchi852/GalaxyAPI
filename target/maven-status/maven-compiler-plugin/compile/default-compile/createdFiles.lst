@@ -1,5 +1,6 @@
 com\apigalaxy\DAO\ShipClassDAO.class
 com\apigalaxy\POJOs\Fleet.class
+com\apigalaxy\DAO\StarSystemImperiumDAO.class
 com\apigalaxy\POJOs\StarSystem.class
 com\apigalaxy\resources\RestUser.class
 com\apigalaxy\POJOs\LogFleet$FleetType.class
@@ -16,14 +17,19 @@ com\apigalaxy\POJOs\Parcel.class
 com\apigalaxy\POJOs\User.class
 com\apigalaxy\DAO\ImperiumDAO.class
 com\apigalaxy\resources\JakartaEE10Resource.class
+com\apigalaxy\resources\RestPlanet.class
 com\apigalaxy\DAO\LogFleetDAO.class
 com\apigalaxy\DAOFactory\MysqlDAOFactory.class
 com\apigalaxy\POJOs\Planet.class
+com\apigalaxy\resources\RestParcels.class
 com\apigalaxy\DAO\TechnologyDAO.class
+com\apigalaxy\DAO\BuildTypeDAO.class
+com\apigalaxy\routines\Routines.class
 com\apigalaxy\DAO\LogBattleDAO.class
 com\apigalaxy\interfaces\IDAO.class
 com\apigalaxy\POJOs\Parcel$LocationType.class
 com\apigalaxy\POJOs\PlanetType.class
+com\apigalaxy\resources\RestUserSession.class
 com\apigalaxy\DAO\LogBattleTechnologyDAO.class
 com\apigalaxy\DAO\LogNavigationDAO.class
 com\apigalaxy\POJOs\ShipClass.class
@@ -32,6 +38,8 @@ com\apigalaxy\DAO\FleetTypeDAO.class
 com\apigalaxy\POJOs\FleetType$FType.class
 com\apigalaxy\resources\RestImperium.class
 com\apigalaxy\POJOs\TechnologyImperium.class
+com\apigalaxy\POJOs\BuildType.class
+com\apigalaxy\POJOs\StarSystemImperium.class
 com\apigalaxy\DAO\ShipDAO.class
 com\apigalaxy\DAO\CoreDAO.class
 com\apigalaxy\DAO\PlanetTypeDAO.class
@@ -51,5 +59,4 @@ com\apigalaxy\POJOs\Technology.class
 com\apigalaxy\POJOs\Technology$TechnologyType.class
 com\apigalaxy\DAO\UserSessionDAO.class
 com\apigalaxy\JakartaRestConfiguration.class
-com\apigalaxy\POJOs\Parcel$Building.class
 com\apigalaxy\POJOs\Imperium.class

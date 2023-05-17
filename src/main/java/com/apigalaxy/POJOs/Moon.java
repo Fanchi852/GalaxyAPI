@@ -152,6 +152,11 @@ public class Moon {
         }
         return res;
     }
+
+    @Override
+    public String toString() {
+        return "Moon{" + "moonId=" + moonId + ", parcels=" + parcels + ", coordinates=" + coordinates + ", normalOreProduction=" + normalOreProduction + ", rareOreProduction=" + rareOreProduction + ", population_changes=" + population_changes + ", cientific_data_changes=" + cientific_data_changes + ", name=" + name + ", planetType=" + planetType + ", resources=" + resources + ", planet=" + planet + ", strResource=" + strResource + '}';
+    }
     
     
     

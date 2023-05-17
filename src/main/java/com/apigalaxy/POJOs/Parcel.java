@@ -16,28 +16,28 @@ import java.sql.Timestamp;
 public class Parcel {
     
     private Integer parcelId, storageCapacity, basic_normal_cost, basic_rare_cost,location;
-    public enum Building {empty, in_construction, normal, rare, scientist, shipyard, city, storage};
-    private Building building;
+    public BuildType Building, to_building;
     public enum LocationType {planet, moon}
     private LocationType locationT;
-    private String to_building;
     private Timestamp construction_start_date;
     private Long basic_time_cost;
 
     public Parcel() {
     }
 
-    public Parcel(Integer storageCapacity, Integer basic_normal_cost, Integer basic_rare_cost, Integer location, Building building, LocationType locationT, String to_building, Timestamp construction_start_date, Long basic_time_cost) {
+    public Parcel(Integer parcelId, Integer storageCapacity, Integer basic_normal_cost, Integer basic_rare_cost, Integer location, BuildType Building, BuildType to_building, LocationType locationT, Timestamp construction_start_date, Long basic_time_cost) {
+        this.parcelId = parcelId;
         this.storageCapacity = storageCapacity;
         this.basic_normal_cost = basic_normal_cost;
         this.basic_rare_cost = basic_rare_cost;
         this.location = location;
-        this.building = building;
-        this.locationT = locationT;
+        this.Building = Building;
         this.to_building = to_building;
+        this.locationT = locationT;
         this.construction_start_date = construction_start_date;
         this.basic_time_cost = basic_time_cost;
     }
+
 
     public Integer getBasic_normal_cost() {
         return basic_normal_cost;
@@ -55,14 +55,6 @@ public class Parcel {
         this.basic_rare_cost = basic_rare_cost;
     }
 
-    public String getTo_building() {
-        return to_building;
-    }
-
-    public void setTo_building(String to_building) {
-        this.to_building = to_building;
-    }
-
     public Timestamp getConstruction_start_date() {
         return construction_start_date;
     }
@@ -78,48 +70,21 @@ public class Parcel {
     public void setBasic_time_cost(Long basic_time_cost) {
         this.basic_time_cost = basic_time_cost;
     }
-    
-    public Building getBuilding() {
-        return building;
+
+    public BuildType getBuilding() {
+        return Building;
     }
 
-    public Boolean setBuilding(String building) {
-        Boolean res = false;
-        switch(building){
-            case "empty":
-                this.building = Building.empty;
-                res = true;
-                break;
-            case "in_construction":
-                this.building = Building.in_construction;
-                res = true;
-                break;
-            case "normal":
-                this.building = Building.normal;
-                res = true;
-                break;
-            case "rare":
-                this.building = Building.rare;
-                res = true;
-                break;
-            case "scientist":
-                this.building = Building.scientist;
-                res = true;
-                break;
-            case "shipyard":
-                this.building = Building.shipyard;
-                res = true;
-                break;
-            case "city":
-                this.building = Building.city;
-                res = true;
-                break;
-            case "storage":
-                this.building = Building.storage;
-                res = true;
-                break;
-        }
-        return res;
+    public void setBuilding(BuildType Building) {
+        this.Building = Building;
+    }
+
+    public BuildType getTo_building() {
+        return to_building;
+    }
+
+    public void setTo_building(BuildType to_building) {
+        this.to_building = to_building;
     }
     
     public Integer getParcelId() {
@@ -164,7 +129,10 @@ public class Parcel {
         }
         return res;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Parcel{" + "parcelId=" + parcelId + ", storageCapacity=" + storageCapacity + ", basic_normal_cost=" + basic_normal_cost + ", basic_rare_cost=" + basic_rare_cost + ", location=" + location + ", Building=" + Building + ", to_building=" + to_building + ", locationT=" + locationT + ", construction_start_date=" + construction_start_date + ", basic_time_cost=" + basic_time_cost + '}';
+    }
     
 }

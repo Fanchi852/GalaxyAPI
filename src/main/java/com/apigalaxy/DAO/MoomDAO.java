@@ -182,9 +182,9 @@ public class MoomDAO implements com.apigalaxy.interfaces.IDAO<Moon, Map<String, 
     }
 
     @Override
-    public Boolean update(Moon moon) {
+    public Integer update(Moon moon) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             //preparamos y ejecutamos la sentencia almacenando y devolviendo la respuesta
@@ -202,7 +202,7 @@ public class MoomDAO implements com.apigalaxy.interfaces.IDAO<Moon, Map<String, 
             statement.setInt(11, moon.getPlanet().getPlanetId());
             statement.setInt(12, moon.getMoonId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(MoomDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

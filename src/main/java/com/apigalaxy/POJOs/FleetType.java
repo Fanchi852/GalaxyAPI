@@ -82,6 +82,11 @@ public class FleetType {
         }
         return res;
     }
+
+    @Override
+    public String toString() {
+        return "FleetType{" + "fleetTypeId=" + fleetTypeId + ", strategy=" + strategy + ", repairs=" + repairs + ", engineering=" + engineering + ", ftype=" + ftype + '}';
+    }
     
     
     

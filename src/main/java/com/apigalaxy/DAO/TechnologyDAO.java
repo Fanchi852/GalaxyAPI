@@ -160,9 +160,9 @@ public class TechnologyDAO implements com.apigalaxy.interfaces.IDAO<Technology, 
     }
 
     @Override
-    public Boolean update(Technology technology) {
+    public Integer update(Technology technology) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             //preparamos y ejecutamos la sentencia almacenando y devolviendo la respuesta
@@ -175,7 +175,7 @@ public class TechnologyDAO implements com.apigalaxy.interfaces.IDAO<Technology, 
             statement.setString(6, technology.getImage());
             statement.setInt(7, technology.getTechnologyId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(TechnologyDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

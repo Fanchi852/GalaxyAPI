@@ -192,6 +192,11 @@ public class LogFleet {
     public void setBase(Planet base) {
         this.base = base;
     }
+
+    @Override
+    public String toString() {
+        return "LogFleet{" + "logFleetId=" + logFleetId + ", speed=" + speed + ", live=" + live + ", shield=" + shield + ", coordinates=" + coordinates + ", destination=" + destination + ", strategy=" + strategy + ", repairs=" + repairs + ", engineering=" + engineering + ", name=" + name + ", image=" + image + ", description=" + description + ", departureTime=" + departureTime + ", imperium=" + imperium + ", base=" + base + ", fType=" + fType + ", resources=" + resources + '}';
+    }
     
     
     

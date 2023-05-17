@@ -193,9 +193,9 @@ public class LogFleetDAO implements com.apigalaxy.interfaces.IDAO<LogFleet, Map<
     }
 
     @Override
-    public Boolean update(LogFleet logFleet) {
+    public Integer update(LogFleet logFleet) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         try {
             // usamos la conexxion para preparar el statment 
             PreparedStatement statement = connection.prepareStatement(UPDATE, Statement.RETURN_GENERATED_KEYS);
@@ -217,7 +217,7 @@ public class LogFleetDAO implements com.apigalaxy.interfaces.IDAO<LogFleet, Map<
             statement.setInt(16, logFleet.getImperium().getImperiumId());
             statement.setInt(17, logFleet.getLogFleetId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(LogFleetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

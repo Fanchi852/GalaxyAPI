@@ -57,5 +57,10 @@ public class TechnologyImperium {
     public void setTechnology(Technology technology) {
         this.technology = technology;
     }
+
+    @Override
+    public String toString() {
+        return "TechnologyImperium{" + "technologyImperiumId=" + technologyImperiumId + ", level=" + level + ", imperium=" + imperium + ", technology=" + technology + '}';
+    }
     
 }

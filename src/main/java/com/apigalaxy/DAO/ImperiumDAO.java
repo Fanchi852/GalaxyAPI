@@ -12,6 +12,7 @@ import com.apigalaxy.POJOs.Planet;
 import com.apigalaxy.POJOs.PlanetType;
 import com.apigalaxy.POJOs.Resources;
 import com.apigalaxy.POJOs.StarSystem;
+import com.apigalaxy.routines.Routines;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,10 +33,10 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
     private final String DB_TABLE = "imperium";
     private final String ID_OBJECT = "imperium_id";
     //aqui almacenamos las 4 sentencias CRUD
-    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, user, cientific_data) VALUES (?, ?, ?)";
+    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, user, planet, cientific_data) VALUES (?, ?, ?, ?)";
     private final String DELETE = "DELETE FROM " + DB_TABLE + " WHERE " + ID_OBJECT + " = ?";
     private final String FIND_BY = "SELECT * FROM " + DB_TABLE;
-    private final String UPDATE = "UPDATE " + DB_TABLE + " SET name = ?, SET user = ?,  cientific_data = ? WHERE " + ID_OBJECT + " = ?";
+    private final String UPDATE = "UPDATE " + DB_TABLE + " SET name = ?, user = ?, planet = ?, cientific_data = ? WHERE " + ID_OBJECT + " = ?";
     //por ultimo la conexion
     private Connection connection;
     
@@ -54,7 +55,8 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
             PreparedStatement statement = connection.prepareStatement(ADD, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, imperium.getName());
             statement.setInt(2, imperium.getUser().getUserId());
-            statement.setInt(3, imperium.getCientificData());
+            statement.setInt(3, imperium.getPlanet().getPlanetId());
+            statement.setInt(4, imperium.getCientificData());
             //ejecutamos el statment y almacenamos la respuesta
             Integer respons = statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -139,10 +141,15 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
                 
                 newImperium.setImperiumId(res.getInt("imperium_id"));
                 newImperium.setName(res.getString("name"));
-                
                 User auxUser = new User();
                 auxUser.setUserId(res.getInt("user"));
                 newImperium.setUser(auxUser);
+                newImperium.setCientificData(res.getInt("cientific_data"));
+                Routines routines = new Routines();
+                PlanetDAO planetDAO = new PlanetDAO();
+                List<Planet> planets = planetDAO.findBy(routines.constructMap("planet_id", res.getString("planet")));
+                System.out.println("este es el planeta que estamos buiscado -------->>>>>>> " + planets.get(0).toString());
+                newImperium.setPlanet(planets.get(0));
                 
                 imperiums.add(newImperium);
                 
@@ -156,56 +163,47 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
     }
 
     @Override
-    public Boolean update(Imperium imperium) {
+    public Integer update(Imperium imperium) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             //preparamos y ejecutamos la sentencia almacenando y devolviendo la respuesta
             PreparedStatement statement = connection.prepareStatement(UPDATE);
             statement.setString(1, imperium.getName());
             statement.setInt(2, imperium.getUser().getUserId());
-            statement.setInt(3, imperium.getCientificData());
-            statement.setInt(4, imperium.getImperiumId());
+            statement.setInt(3, imperium.getPlanet().getPlanetId());
+            statement.setInt(4, imperium.getCientificData());
+            statement.setInt(5, imperium.getImperiumId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(ImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return res;
     }
-    public Planet createImpetium(User user, Imperium imperium){
-        String CREATE_IMPERIUM = "call create_imperium(" + user.getName() +", "+ imperium.getName() + ");";
-        Planet res = new Planet();
+    public Imperium createImpetium(User user, Imperium imperium){
+        String CREATE_IMPERIUM = "call create_imperium(" + user.getUserId() +", '"+ imperium.getName() + "');";
+        Imperium res = new Imperium();
+        Routines routines = new Routines();
         try{
             PreparedStatement statement = connection.prepareStatement(CREATE_IMPERIUM);
+            System.out.println("statement de create imperio: "+statement.toString());
             ResultSet resultset = statement.executeQuery();
-
+            //System.out.println("resultset de create imperio: "+resultset.getCursorName());
+            resultset.next();
             //Establecemos los valores de las propiedades usando los datos de la fila del ResultSet
-            res.setPlanetId(resultset.getInt("planet_id"));
+            res.setImperiumId(resultset.getInt("imperium_id"));
             res.setName(resultset.getString("name"));
-            PlanetType planetType = new PlanetType();
-            planetType.setPlanetTypeId(resultset.getInt("type"));
-            res.setPlanetType(planetType);
-            res.setCoordinates(resultset.getInt("coordinates"));
-            Imperium imperiumAUX = new Imperium();
-            imperiumAUX.setImperiumId(resultset.getInt("owner"));
-            res.setImperium(imperiumAUX);
-            res.setStrResource(resultset.getString("strong_resource"));
-            res.setNormalOreProduction(resultset.getInt("normal_ore_production"));
-            res.setRareOreProduction(resultset.getInt("rare_ore_production"));
-            res.setPopulation_changes(resultset.getInt("population_changes"));
-            res.setCientific_data_changes(resultset.getInt("cientific_data_changes"));
-            Resources resources = new Resources();
-            resources.setResourceId(resultset.getInt("resources"));
-            res.setResources(resources);
-            StarSystem starsystem = new StarSystem();
-            starsystem.setStarId(resultset.getInt("star"));
-            res.setStar(starsystem);
+            
+            PlanetDAO planetDAO = new PlanetDAO();
+            List<Planet> planetList = planetDAO.findBy(routines.constructMap("planet_id", resultset.getString("planet")));
+            Planet planet = planetList.get(0);
+            res.setPlanet(planet);
 
         }catch(SQLException ex){
-            Logger.getLogger(CoreDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return res;

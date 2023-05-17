@@ -148,9 +148,9 @@ public class UserDAO implements com.apigalaxy.interfaces.IDAO<User, Map<String, 
     }
 
     @Override
-    public Boolean update(User user) {
+    public Integer update(User user) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             //preparamos y ejecutamos la sentencia almacenando y devolviendo la respuesta
@@ -160,7 +160,7 @@ public class UserDAO implements com.apigalaxy.interfaces.IDAO<User, Map<String, 
             statement.setString(3, user.getEmail());
             statement.setInt(4, user.getUserId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

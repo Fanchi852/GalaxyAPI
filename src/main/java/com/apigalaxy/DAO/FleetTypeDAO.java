@@ -147,9 +147,9 @@ public class FleetTypeDAO implements com.apigalaxy.interfaces.IDAO<FleetType, Ma
     }
 
     @Override
-    public Boolean update(FleetType fleetType) {
+    public Integer update(FleetType fleetType) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         try {
             // usamos la conexxion para preparar el statment 
             PreparedStatement statement = connection.prepareStatement(UPDATE, Statement.RETURN_GENERATED_KEYS);
@@ -159,7 +159,7 @@ public class FleetTypeDAO implements com.apigalaxy.interfaces.IDAO<FleetType, Ma
             statement.setFloat(4, fleetType.getEngineering());
             statement.setInt(5, fleetType.getFleetTypeId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(FleetTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -21,11 +21,12 @@ public class Fleet {
     private Planet base;
     private String name, description, image;
     private Timestamp departureTime;
+    private Resources resources;
 
     public Fleet() {
     }
 
-    public Fleet(Integer coordinates, Integer destination, FleetType fleetType, Imperium imperium, Planet base, String name, String description, String image, Timestamp departureTime) {
+    public Fleet(Resources resources, Integer coordinates, Integer destination, FleetType fleetType, Imperium imperium, Planet base, String name, String description, String image, Timestamp departureTime) {
         this.coordinates = coordinates;
         this.destination = destination;
         this.fleetType = fleetType;
@@ -35,10 +36,19 @@ public class Fleet {
         this.description = description;
         this.image = image;
         this.departureTime = departureTime;
+        this.resources = resources;
     }
 
     public Integer getFleetId() {
         return fleetId;
+    }
+
+    public Resources getResources() {
+        return resources;
+    }
+
+    public void setResources(Resources resources) {
+        this.resources = resources;
     }
 
     public void setFleetId(Integer fleetId) {
@@ -115,6 +125,11 @@ public class Fleet {
 
     public void setDepartureTime(Timestamp departureTime) {
         this.departureTime = departureTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Fleet{" + "fleetId=" + fleetId + ", coordinates=" + coordinates + ", destination=" + destination + ", fleetType=" + fleetType + ", imperium=" + imperium + ", base=" + base + ", name=" + name + ", description=" + description + ", image=" + image + ", departureTime=" + departureTime + ", resources=" + resources + '}';
     }
     
     

@@ -92,5 +92,10 @@ public class ShipClass {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "ShipClass{" + "shipClassId=" + shipClassId + ", basicLife=" + basicLife + ", basicShield=" + basicShield + ", basicDamage=" + basicDamage + ", basic_normal_cost=" + basic_normal_cost + ", basic_rare_cost=" + basic_rare_cost + ", name=" + name + ", description=" + description + '}';
+    }
     
 }

@@ -158,10 +158,10 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
     }
 
     @Override
-    public Boolean update(ShipClass shipClass) {
+    public Integer update(ShipClass shipClass) {
         
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             // usamos la conexxion para preparar el statment 
@@ -175,7 +175,7 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
             statement.setInt(7, shipClass.getBasic_rare_cost());
             statement.setInt(8, shipClass.getShipClassId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(ShipClassDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

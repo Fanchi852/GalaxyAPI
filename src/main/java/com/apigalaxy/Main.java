@@ -5,7 +5,9 @@
 package com.apigalaxy;
 
 import com.apigalaxy.DAO.UserSessionDAO;
+import com.apigalaxy.POJOs.Imperium;
 import com.apigalaxy.POJOs.User;
+import com.apigalaxy.POJOs.UserSession;
 
 /**
  *
@@ -13,10 +15,8 @@ import com.apigalaxy.POJOs.User;
  */
 public class Main {
      public static void main (String[] args) {
-         UserSessionDAO usdao = new UserSessionDAO();
-         User user = new User();
-         user.setName("asd");
-         user.setPassword("123123");
-         usdao.login(user);
+         
+         
+         
      }
 }

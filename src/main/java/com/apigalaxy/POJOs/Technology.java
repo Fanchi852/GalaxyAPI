@@ -98,4 +98,9 @@ public class Technology {
         return res;
     }
 
+    @Override
+    public String toString() {
+        return "Technology{" + "technologyId=" + technologyId + ", basicCost=" + basicCost + ", name=" + name + ", description=" + description + ", image=" + image + ", bono=" + bono + ", techType=" + techType + '}';
+    }
+
 }

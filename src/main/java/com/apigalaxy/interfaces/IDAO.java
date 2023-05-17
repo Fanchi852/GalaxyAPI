@@ -18,6 +18,6 @@ public interface IDAO <B,M> {
     public Integer add (B bean);
     public Boolean delete (B bean);
     public List findBy (M filter);
-    public Boolean update (B bean);
+    public Integer update (B bean);
     
 }

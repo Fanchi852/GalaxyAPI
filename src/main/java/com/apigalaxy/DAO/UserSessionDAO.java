@@ -151,9 +151,9 @@ public class UserSessionDAO implements com.apigalaxy.interfaces.IDAO<UserSession
     }
 
     @Override
-    public Boolean update(UserSession userSession) {
+    public Integer update(UserSession userSession) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             //preparamos y ejecutamos la sentencia almacenando y devolviendo la respuesta
@@ -162,8 +162,8 @@ public class UserSessionDAO implements com.apigalaxy.interfaces.IDAO<UserSession
             statement.setTimestamp(2, userSession.getInitial_date());
             statement.setTimestamp(3, userSession.getLast_update());
             statement.setInt(4, userSession.getUserSession_id());
-            
-            res = statement.execute();
+            System.out.println("este es el execute ->>>>"+statement.toString());
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

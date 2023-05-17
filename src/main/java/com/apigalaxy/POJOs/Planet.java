@@ -13,8 +13,8 @@ package com.apigalaxy.POJOs;
  */
 public class Planet {
     
-    private Integer planetId, parcels, coordinates, normalOreProduction, rareOreProduction, population_changes, cientific_data_changes;
-    private String name;
+    private Integer planetId, parcels, normalOreProduction, rareOreProduction, population_changes, cientific_data_changes;
+    private String name, coordinates;
     public enum StrongResource {normal, rare, population, cientific}
     private StrongResource strResource;
     private Imperium imperium;
@@ -25,7 +25,7 @@ public class Planet {
     public Planet() {
     }
 
-    public Planet(Integer parcels, Integer coordinates, Integer normalOreProduction, Integer rareOreProduction, Integer population_changes, Integer cientific_data_changes, String name, StrongResource strResource, Imperium imperium, PlanetType planetType, StarSystem Star, Resources resources) {
+    public Planet(Integer parcels, String coordinates, Integer normalOreProduction, Integer rareOreProduction, Integer population_changes, Integer cientific_data_changes, String name, StrongResource strResource, Imperium imperium, PlanetType planetType, StarSystem Star, Resources resources) {
         this.parcels = parcels;
         this.coordinates = coordinates;
         this.normalOreProduction = normalOreProduction;
@@ -88,11 +88,11 @@ public class Planet {
         this.parcels = parcels;
     }
 
-    public Integer getCoordinates() {
+    public String getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(Integer coordinates) {
+    public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -161,6 +161,11 @@ public class Planet {
                 break;
         }
         return res;
+    }
+
+    @Override
+    public String toString() {
+        return "Planet{" + "planetId=" + planetId + ", parcels=" + parcels + ", coordinates=" + coordinates + ", normalOreProduction=" + normalOreProduction + ", rareOreProduction=" + rareOreProduction + ", population_changes=" + population_changes + ", cientific_data_changes=" + cientific_data_changes + ", name=" + name + ", strResource=" + strResource + ", imperium=" + imperium + ", planetType=" + planetType + ", Star=" + Star + ", resources=" + resources + '}';
     }
     
             

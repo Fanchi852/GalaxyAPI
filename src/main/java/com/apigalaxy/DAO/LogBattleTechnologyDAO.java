@@ -154,9 +154,9 @@ public class LogBattleTechnologyDAO implements com.apigalaxy.interfaces.IDAO<Log
     }
 
     @Override
-    public Boolean update(LogBattleTechnology logBattleTechnology) {
+    public Integer update(LogBattleTechnology logBattleTechnology) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         try {
             // usamos la conexxion para preparar el statment 
             PreparedStatement statement = connection.prepareStatement(UPDATE, Statement.RETURN_GENERATED_KEYS);
@@ -166,7 +166,7 @@ public class LogBattleTechnologyDAO implements com.apigalaxy.interfaces.IDAO<Log
             statement.setInt(4, logBattleTechnology.getLogBattle().getLogBattleId());
             statement.setInt(5, logBattleTechnology.getLogBattleTechnologyId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(LogBattleTechnologyDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

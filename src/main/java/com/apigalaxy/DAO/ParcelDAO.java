@@ -5,13 +5,22 @@
 package com.apigalaxy.DAO;
 
 import com.apigalaxy.DAOFactory.MysqlDAOFactory;
+import com.apigalaxy.POJOs.BuildType;
 import com.apigalaxy.POJOs.Parcel;
+import com.apigalaxy.routines.Routines;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.time.Duration;
+import java.time.Instant;
+import static java.time.Instant.now;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -66,8 +75,8 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
             }
             // usamos la conexxion para preparar el statment 
             PreparedStatement statement = connection.prepareStatement(querry, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, parcel.getBuilding().name());
-            statement.setString(2, parcel.getTo_building());
+            statement.setInt(1, parcel.getBuilding().getBuildType_id());
+            statement.setInt(2, parcel.getTo_building().getBuildType_id());
             statement.setTimestamp(3, parcel.getConstruction_start_date());
             statement.setInt(4, parcel.getStorageCapacity());
             statement.setInt(5, parcel.getBasic_normal_cost());
@@ -155,15 +164,32 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
                 Parcel newParcel = new Parcel();
                 
                 newParcel.setParcelId(res.getInt("parcel_id"));
-                newParcel.setBuilding(res.getString("building"));
-                newParcel.setTo_building(res.getString("to_building"));
+                BuildType buildType = new BuildType();
+                BuildType toBuildType = new BuildType();
+                buildType.setBuildType_id(res.getInt("building"));
+                newParcel.setBuilding(buildType);
+                toBuildType.setBuildType_id(res.getInt("to_building"));
+                newParcel.setTo_building(toBuildType);
                 newParcel.setConstruction_start_date(res.getTimestamp("construction_start_date"));
                 newParcel.setStorageCapacity(res.getInt("storage_capacity"));
                 newParcel.setBasic_normal_cost(res.getInt("basic_normal_cost"));
                 newParcel.setBasic_rare_cost(res.getInt("basic_rare_cost"));
                 newParcel.setBasic_time_cost(res.getLong("basic_time_cost"));
-                newParcel.setLocationT(res.getString("locationtype"));
-                newParcel.setLocation(res.getInt("location"));
+                newParcel.setLocationT(res.getString("location"));
+                Integer planet = null;
+                Integer moon =null;
+                try{
+                    planet = res.getInt("planet");
+                    moon = res.getInt("moon");
+                }catch(SQLException ex){
+                    Logger.getLogger(ParcelDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (planet == null){
+                    newParcel.setLocation(moon);
+                }else{
+                    newParcel.setLocation(planet);
+                }
+                
                 parcels.add(newParcel);
             }
             
@@ -175,9 +201,9 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
     }
 
     @Override
-    public Boolean update(Parcel parcel) {
+    public Integer update(Parcel parcel) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         
         try {
             String querry = STARTUPDATE;
@@ -192,8 +218,8 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
             }
             // usamos la conexxion para preparar el statment 
             PreparedStatement statement = connection.prepareStatement(querry, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, parcel.getBuilding().name());
-            statement.setString(2, parcel.getTo_building());
+            statement.setInt(1, parcel.getBuilding().getBuildType_id());
+            statement.setInt(2, parcel.getTo_building().getBuildType_id());
             statement.setTimestamp(3, parcel.getConstruction_start_date());
             statement.setInt(4, parcel.getStorageCapacity());
             statement.setInt(5, parcel.getBasic_normal_cost());
@@ -203,7 +229,7 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
             statement.setInt(9, parcel.getLocation());
             statement.setInt(10, parcel.getParcelId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(ParcelDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -211,6 +237,84 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
         return res;
     }
     
+    public Parcel starConstruction(Parcel parcel){
+        Parcel res = new Parcel();
+        Routines routines = new Routines();
+        String CALL = "call start_build_parcel("+parcel.getTo_building().getBuildType_id()+", "+parcel.getLocation()+", ?);";
+        System.out.println("CALL de star construction: "+CALL);
+        try{
+            CallableStatement callableStatement = connection.prepareCall(CALL);
+            // Registrar el argumento de salida como un entero
+            
+            callableStatement.registerOutParameter(1, Types.INTEGER);
+            System.out.println("statement de star construction: "+callableStatement.toString());
+            callableStatement.execute();
+            
+            Integer result = callableStatement.getInt(1);
+            
+            ParcelDAO parcelDAO = new ParcelDAO();
+            List<Parcel> parcelList = parcelDAO.findBy(routines.constructMap("parcel_id", result.toString()));
+            res = parcelList.get(0);
+        }catch(SQLException ex){
+            Logger.getLogger(ParcelDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return res;
+    }
     
+    public Parcel endConstruction(Parcel parcel){
+        Parcel res = new Parcel();
+        Routines routines = new Routines();
+        String CALL = "call terminate_build_parcel("+parcel.getParcelId()+");";
+        System.out.println("CALL de end construction: "+CALL);
+        try{
+            ParcelDAO parcelDAO = new ParcelDAO();
+            List<Parcel> parcelList = parcelDAO.findBy(routines.constructMap("parcel_id", parcel.getParcelId().toString()));
+            Parcel parcelaux = parcelList.get(0);
+            
+            //Timestamp startDate = parcelaux.getConstruction_start_date();
+            System.out.println("================================================");
+            Calendar calStart = Calendar.getInstance();
+            calStart.setTimeInMillis(parcelaux.getConstruction_start_date().getTime());
+            calStart.add(Calendar.HOUR, -2);
+            //parcelaux.setConstruction_start_date(new Timestamp(calStart.getTime().getTime()));
+            //System.out.println("startDate: " + startDate);
+            
+            Calendar calEnd = Calendar.getInstance();
+            
+            //Instant date1 = Instant.ofEpochMilli(parcelaux.getConstruction_start_date().getTime());
+            //Instant date2 = Instant.ofEpochMilli(System.currentTimeMillis());
+            //System.out.println("parcelaux.getConstruction_start_date(): " + parcelaux.getConstruction_start_date());
+            //System.out.println("date1: " + date1);
+            //System.out.println("date2: " + date2);
+            //System.out.println("en fechas date 1: "+parcelaux.getConstruction_start_date()+" date 2: "+System.currentTimeMillis());
+            //System.out.println("en milisegundos date 1: "+parcelaux.getConstruction_start_date().getTime()+" date 2: "+System.currentTimeMillis());
+            //System.out.println("date 1: "+date1.getEpochSecond()+" date 2: "+date2.getEpochSecond());
+            //System.out.println("esta es la fecha actual"+now());
+            System.out.println("================================================");
+            Duration dif = Duration.between(calStart.toInstant(), calEnd.toInstant());
+            System.out.println("dif: " + dif.getSeconds());
+            System.out.println("parcelaux.getBasic_time_cost(): " + parcelaux.getBasic_time_cost());
+            //System.out.println("la contruccion lleva " + dif.getSeconds() +" segundos de "+parcelaux.getBasic_time_cost()+" segundos que tiene que durar");
+            if (dif.getSeconds()>parcelaux.getBasic_time_cost()){
+                System.out.println("================================================");
+                System.out.println("VOY A ACYUALIZAR");
+                System.out.println("================================================");
+                PreparedStatement statement = connection.prepareStatement(CALL);
+                System.out.println("statement de end construction: "+statement.toString());
+                statement.executeQuery();
+
+                List<Parcel> parcelList1 = parcelDAO.findBy(routines.constructMap("parcel_id", parcel.getParcelId().toString()));
+                res = parcelList1.get(0);
+            }else{
+                res = parcelaux;
+            }
+            
+        }catch(SQLException ex){
+            Logger.getLogger(ParcelDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return res;
+    }
     
 }

@@ -56,6 +56,11 @@ public class LogNavigation {
     public void setFleet(LogFleet fleet) {
         this.fleet = fleet;
     }
+
+    @Override
+    public String toString() {
+        return "LogNavigation{" + "logNavigationId=" + logNavigationId + ", origen=" + origen + ", speed=" + speed + ", fleet=" + fleet + '}';
+    }
     
     
     

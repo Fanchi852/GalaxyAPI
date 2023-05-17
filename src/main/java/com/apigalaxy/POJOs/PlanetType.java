@@ -103,6 +103,11 @@ public class PlanetType {
         this.pCientific = pCientific;
     }
 
+    @Override
+    public String toString() {
+        return "PlanetType{" + "planetTypeId=" + planetTypeId + ", name=" + name + ", description=" + description + ", image=" + image + ", pLive=" + pLive + ", pBuilding=" + pBuilding + ", pNormalMineral=" + pNormalMineral + ", pRareMineral=" + pRareMineral + ", pCientific=" + pCientific + '}';
+    }
+
     
     
 }

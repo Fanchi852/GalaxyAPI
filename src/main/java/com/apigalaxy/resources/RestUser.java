@@ -21,11 +21,12 @@ import java.util.Map;
 
 /**
  *
- * @author Fanch
+ * @author Francisco Jesus Moya Olivares
  */
 @Path("user")
 public class RestUser {
     
+    //realiza el login 
     @POST
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
@@ -37,25 +38,10 @@ public class RestUser {
         UserSession userSession = usdao.login(user);
         response = Response.ok(userSession).build();
         
-        /*
-        UserDAO  userDAO = new UserDAO();
-        
-        Map<String, String[]> map = new HashMap<String, String[]>();
-        String[] email = new String[]{user.getEmail()};
-        String[] password = new String[]{user.getPassword()};
-        map.put("password", password);
-        map.put("email", email);
-        
-        List<User> users = userDAO.findBy(map);
-        
-        if(users.get(0).getEmail().equals(user.getEmail())){
-                        response = Response.ok(users.get(0)).build();
-                    }else{
-                        response = Response.notAcceptable(Collections.emptyList()).build();
-                    }*/
-        
         return response;
     }
+    
+    //realiza el registro
     @POST
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
@@ -65,23 +51,6 @@ public class RestUser {
         UserDAO usdao = new UserDAO();
         Response response;
         response = Response.ok(usdao.add(user)).build();
-        
-        /*
-        UserDAO  userDAO = new UserDAO();
-        
-        Map<String, String[]> map = new HashMap<String, String[]>();
-        String[] email = new String[]{user.getEmail()};
-        String[] password = new String[]{user.getPassword()};
-        map.put("password", password);
-        map.put("email", email);
-        
-        List<User> users = userDAO.findBy(map);
-        
-        if(users.get(0).getEmail().equals(user.getEmail())){
-                        response = Response.ok(users.get(0)).build();
-                    }else{
-                        response = Response.notAcceptable(Collections.emptyList()).build();
-                    }*/
         
         return response;
     }

@@ -147,9 +147,9 @@ public class LogNavigationDAO implements com.apigalaxy.interfaces.IDAO<LogNaviga
     }
 
     @Override
-    public Boolean update(LogNavigation logNavigation) {
+    public Integer update(LogNavigation logNavigation) {
         //preparamos la respuesta en false para informar en caso de fallo
-        Boolean res = false;
+        Integer res = 0;
         try {
             // usamos la conexxion para preparar el statment 
             PreparedStatement statement = connection.prepareStatement(UPDATE, Statement.RETURN_GENERATED_KEYS);
@@ -158,7 +158,7 @@ public class LogNavigationDAO implements com.apigalaxy.interfaces.IDAO<LogNaviga
             statement.setInt(3, logNavigation.getFleet().getLogFleetId());
             statement.setInt(4, logNavigation.getLogNavigationId());
             
-            res = statement.execute();
+            res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(LogNavigationDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
