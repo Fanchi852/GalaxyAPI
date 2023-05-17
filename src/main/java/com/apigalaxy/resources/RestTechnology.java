@@ -50,7 +50,7 @@ public class RestTechnology {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response techupdate(TechnologyImperium technologyImperium) {
         System.out.println("recibimos de la app: "+technologyImperium.toString());
-        
+        //Prueba
         TechnologyImperiumDAO technologyImperiumDAO = new TechnologyImperiumDAO();
         ImperiumDAO impDAO = new ImperiumDAO();
         TechnologyDAO technologyDAO = new TechnologyDAO();
