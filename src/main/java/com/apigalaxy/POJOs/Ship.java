@@ -14,7 +14,7 @@ package com.apigalaxy.POJOs;
 public class Ship {
     
     private Integer ShipId, life, shield, damage, storageCapacity;
-    private String name, image;
+    private String name;
     private ShipClass shipClass;
     private Fleet fleet;
     private Resources resources;
@@ -22,13 +22,12 @@ public class Ship {
     public Ship() {
     }
 
-    public Ship(Integer life, Integer shield, Integer damage, Resources resources, String name, String image, ShipClass shipClass, Fleet fleet,Integer  storageCapacity) {
+    public Ship(Integer life, Integer shield, Integer damage, Resources resources, String name, ShipClass shipClass, Fleet fleet,Integer  storageCapacity) {
         this.life = life;
         this.shield = shield;
         this.damage = damage;
         this.resources = resources;
         this.name = name;
-        this.image = image;
         this.shipClass = shipClass;
         this.fleet = fleet;
         this.storageCapacity = storageCapacity;
@@ -106,17 +105,9 @@ public class Ship {
         this.fleet = fleet;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     @Override
     public String toString() {
-        return "Ship{" + "ShipId=" + ShipId + ", life=" + life + ", shield=" + shield + ", damage=" + damage + ", storageCapacity=" + storageCapacity + ", name=" + name + ", image=" + image + ", shipClass=" + shipClass + ", fleet=" + fleet + ", resources=" + resources + '}';
+        return "Ship{" + "ShipId=" + ShipId + ", life=" + life + ", shield=" + shield + ", damage=" + damage + ", storageCapacity=" + storageCapacity + ", name=" + name + ", shipClass=" + shipClass + ", fleet=" + fleet + ", resources=" + resources + '}';
     }
     
 }

@@ -30,7 +30,7 @@ public class ShipDAO implements com.apigalaxy.interfaces.IDAO<Ship, Map<String, 
     private final String DB_TABLE = "ship";
     private final String ID_OBJECT = "ship_id";
     //aqui almacenamos las 4 sentencias CRUD
-    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, class, storage_capacity, life, shield, damage, resources, fleet, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, class, storage_capacity, life, shield, damage, resources, fleet) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private final String DELETE = "DELETE FROM " + DB_TABLE + " WHERE " + ID_OBJECT + " = ?";
     private final String FIND_BY = "SELECT * FROM " + DB_TABLE;
     private final String UPDATE = "UPDATE " + DB_TABLE + " SET "
@@ -41,8 +41,7 @@ public class ShipDAO implements com.apigalaxy.interfaces.IDAO<Ship, Map<String, 
             + "shield = ?, "
             + "damage = ?, "
             + "resources = ?, "
-            + "fleet = ?, "
-            + "image = ? "
+            + "fleet = ? "
             + "WHERE " + ID_OBJECT + " = ?";
     //por ultimo la conexion
     private Connection connection;
@@ -68,7 +67,6 @@ public class ShipDAO implements com.apigalaxy.interfaces.IDAO<Ship, Map<String, 
             statement.setInt(6, ship.getDamage());
             statement.setInt(7, ship.getResources().getResourceId());
             statement.setInt(8, ship.getFleet().getFleetId());
-            statement.setString(9, ship.getImage());
             //ejecutamos el statment y almacenamos la respuesta
             Integer respons = statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -161,7 +159,6 @@ public class ShipDAO implements com.apigalaxy.interfaces.IDAO<Ship, Map<String, 
                 Fleet fleet = new Fleet();
                 fleet.setFleetId(res.getInt("fleet"));
                 newShip.setFleet(fleet);
-                newShip.setImage(res.getString("image"));
                 ships.add(newShip);
             }
         } catch (SQLException ex) {
@@ -185,8 +182,7 @@ public class ShipDAO implements com.apigalaxy.interfaces.IDAO<Ship, Map<String, 
             statement.setInt(6, ship.getDamage());
             statement.setInt(7, ship.getResources().getResourceId());
             statement.setInt(8, ship.getFleet().getFleetId());
-            statement.setString(9, ship.getImage());
-            statement.setInt(10, ship.getShipId());
+            statement.setInt(9, ship.getShipId());
             
             res = statement.executeUpdate();
         } catch (SQLException ex){

@@ -14,12 +14,12 @@ package com.apigalaxy.POJOs;
 public class ShipClass {
     
     private Integer shipClassId, basicLife, basicShield, basicDamage, basic_normal_cost, basic_rare_cost;
-    private String name, description;
+    private String name, description, image;
 
     public ShipClass() {
     }
 
-    public ShipClass(Integer basicLife, Integer basicShield, Integer basicDamage, Integer basic_normal_cost, Integer basic_rare_cost, String name, String description) {
+    public ShipClass(Integer basicLife, Integer basicShield, String image, Integer basicDamage, Integer basic_normal_cost, Integer basic_rare_cost, String name, String description) {
         this.basicLife = basicLife;
         this.basicShield = basicShield;
         this.basicDamage = basicDamage;
@@ -27,6 +27,15 @@ public class ShipClass {
         this.basic_rare_cost = basic_rare_cost;
         this.name = name;
         this.description = description;
+        this.image = image;
+    }
+    
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Integer getBasic_normal_cost() {
@@ -95,7 +104,8 @@ public class ShipClass {
 
     @Override
     public String toString() {
-        return "ShipClass{" + "shipClassId=" + shipClassId + ", basicLife=" + basicLife + ", basicShield=" + basicShield + ", basicDamage=" + basicDamage + ", basic_normal_cost=" + basic_normal_cost + ", basic_rare_cost=" + basic_rare_cost + ", name=" + name + ", description=" + description + '}';
+        return "ShipClass{" + "shipClassId=" + shipClassId + ", basicLife=" + basicLife + ", basicShield=" + basicShield + ", basicDamage=" + basicDamage + ", basic_normal_cost=" + basic_normal_cost + ", basic_rare_cost=" + basic_rare_cost + ", name=" + name + ", description=" + description + ", image=" + image + '}';
     }
+
     
 }

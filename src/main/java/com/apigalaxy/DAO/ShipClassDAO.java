@@ -27,7 +27,7 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
     private final String DB_TABLE = "shipClass";
     private final String ID_OBJECT = "sipClass_id";
     //aqui almacenamos las 4 sentencias CRUD
-    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, descripcion, basic_life, basic_shield, basic_damage, basic_normal_cost, basic_rare_cost) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, descripcion, basic_life, basic_shield, basic_damage, basic_normal_cost, basic_rare_cost, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private final String DELETE = "DELETE FROM " + DB_TABLE + " WHERE " + ID_OBJECT + " = ?";
     private final String FIND_BY = "SELECT * FROM " + DB_TABLE;
     private final String UPDATE = "UPDATE " + DB_TABLE + " SET "
@@ -37,7 +37,8 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
             + "basic_shield = ?, "
             + "basic_damage = ?, "
             + "basic_normal_cost = ?, "
-            + "basic_rare_cost = ? "
+            + "basic_rare_cost = ?, "
+            + "image = ? "
             + "WHERE " + ID_OBJECT + " = ?";
     //por ultimo la conexion
     private Connection connection;
@@ -62,6 +63,7 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
             statement.setInt(5, shipClass.getBasicDamage());
             statement.setInt(6, shipClass.getBasic_normal_cost());
             statement.setInt(7, shipClass.getBasic_rare_cost());
+            statement.setString(8, shipClass.getImage());
             //ejecutamos el statment y almacenamos la respuesta
             Integer respons = statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -149,6 +151,7 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
                 newShipClass.setBasicDamage(res.getInt("basic_damage"));
                 newShipClass.setBasic_normal_cost(res.getInt("basic_normal_cost"));
                 newShipClass.setBasic_rare_cost(res.getInt("basic_rare_cost"));
+                newShipClass.setImage(res.getString("image"));
                 shipClases.add(newShipClass);
             }
         } catch (SQLException ex) {
@@ -173,7 +176,8 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
             statement.setInt(5, shipClass.getBasicDamage());
             statement.setInt(6, shipClass.getBasic_normal_cost());
             statement.setInt(7, shipClass.getBasic_rare_cost());
-            statement.setInt(8, shipClass.getShipClassId());
+            statement.setString(8, shipClass.getImage());
+            statement.setInt(9, shipClass.getShipClassId());
             
             res = statement.executeUpdate();
         } catch (SQLException ex){
