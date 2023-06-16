@@ -9,6 +9,7 @@ import com.apigalaxy.POJOs.Fleet;
 import com.apigalaxy.POJOs.Resources;
 import com.apigalaxy.POJOs.Ship;
 import com.apigalaxy.POJOs.ShipClass;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,17 +31,21 @@ public class ShipDAO implements com.apigalaxy.interfaces.IDAO<Ship, Map<String, 
     private final String DB_TABLE = "ship";
     private final String ID_OBJECT = "ship_id";
     //aqui almacenamos las 4 sentencias CRUD
-    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, class, storage_capacity, life, shield, damage, resources, fleet) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, class, storage_capacity, total_life, life, total_shield, shield, total_damage, damage, total_speed, speed, fleet) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String DELETE = "DELETE FROM " + DB_TABLE + " WHERE " + ID_OBJECT + " = ?";
     private final String FIND_BY = "SELECT * FROM " + DB_TABLE;
     private final String UPDATE = "UPDATE " + DB_TABLE + " SET "
             + "name = ?,  "
             + "class = ?, "
             + "storage_capacity = ?, "
+            + "total_life = ?, "
             + "life = ?, "
+            + "total_shield = ?, "
             + "shield = ?, "
+            + "total_damage = ?, "
             + "damage = ?, "
-            + "resources = ?, "
+            + "total_speed = ?, "
+            + "speed = ?, "
             + "fleet = ? "
             + "WHERE " + ID_OBJECT + " = ?";
     //por ultimo la conexion
@@ -62,11 +67,15 @@ public class ShipDAO implements com.apigalaxy.interfaces.IDAO<Ship, Map<String, 
             statement.setString(1, ship.getName());
             statement.setInt(2, ship.getShipClass().getShipClassId());
             statement.setInt(3, ship.getStorageCapacity());
-            statement.setInt(4, ship.getLife());
-            statement.setInt(5, ship.getShield());
-            statement.setInt(6, ship.getDamage());
-            statement.setInt(7, ship.getResources().getResourceId());
-            statement.setInt(8, ship.getFleet().getFleetId());
+            statement.setInt(4, ship.getTotalLife());
+            statement.setInt(5, ship.getLife());
+            statement.setInt(6, ship.getTotalShield());
+            statement.setInt(7, ship.getShield());
+            statement.setInt(8, ship.getTotalDamage());
+            statement.setInt(9, ship.getDamage());
+            statement.setInt(10, ship.getTotalSpeed());
+            statement.setInt(11, ship.getSpeed());
+            statement.setInt(13, ship.getFleet().getFleetId());
             //ejecutamos el statment y almacenamos la respuesta
             Integer respons = statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -150,12 +159,14 @@ public class ShipDAO implements com.apigalaxy.interfaces.IDAO<Ship, Map<String, 
                 shipClass.setShipClassId(res.getInt("class"));
                 newShip.setShipClass(shipClass);
                 newShip.setStorageCapacity(res.getInt("storage_capacity"));
+                newShip.setTotalLife(res.getInt("total_life"));
                 newShip.setLife(res.getInt("life"));
+                newShip.setTotalShield(res.getInt("total_shield"));
                 newShip.setShield(res.getInt("shield"));
+                newShip.setTotalDamage(res.getInt("total_damage"));
                 newShip.setDamage(res.getInt("damage"));
-                Resources resources = new Resources();
-                resources.setResourceId(res.getInt("resources"));
-                newShip.setResources(resources);
+                newShip.setTotalSpeed(res.getInt("total_speed"));
+                newShip.setSpeed(res.getInt("speed"));
                 Fleet fleet = new Fleet();
                 fleet.setFleetId(res.getInt("fleet"));
                 newShip.setFleet(fleet);
@@ -177,12 +188,16 @@ public class ShipDAO implements com.apigalaxy.interfaces.IDAO<Ship, Map<String, 
             statement.setString(1, ship.getName());
             statement.setInt(2, ship.getShipClass().getShipClassId());
             statement.setInt(3, ship.getStorageCapacity());
-            statement.setInt(4, ship.getLife());
-            statement.setInt(5, ship.getShield());
-            statement.setInt(6, ship.getDamage());
-            statement.setInt(7, ship.getResources().getResourceId());
-            statement.setInt(8, ship.getFleet().getFleetId());
-            statement.setInt(9, ship.getShipId());
+            statement.setInt(4, ship.getTotalLife());
+            statement.setInt(5, ship.getLife());
+            statement.setInt(6, ship.getTotalShield());
+            statement.setInt(7, ship.getShield());
+            statement.setInt(8, ship.getTotalDamage());
+            statement.setInt(9, ship.getDamage());
+            statement.setInt(10, ship.getTotalSpeed());
+            statement.setInt(11, ship.getSpeed());
+            statement.setInt(13, ship.getFleet().getFleetId());
+            statement.setInt(14, ship.getShipId());
             
             res = statement.executeUpdate();
         } catch (SQLException ex){
@@ -190,4 +205,19 @@ public class ShipDAO implements com.apigalaxy.interfaces.IDAO<Ship, Map<String, 
         }
         return res;
     }
+    
+    public void createShip(Ship ship){
+        
+        try {
+            // usamos la conexxion para preparar el statment 
+            CallableStatement statement = connection.prepareCall("call create_ship(?, ?)");
+            statement.setInt(1, ship.getFleet().getFleetId());
+            statement.setInt(2, ship.getShipClass().getShipClassId());
+            statement.execute();
+            
+        } catch (SQLException ex){
+            Logger.getLogger(ResourcesDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }
