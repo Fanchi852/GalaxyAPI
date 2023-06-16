@@ -61,7 +61,8 @@ public class CoreDAO {
         StarSystem starsystem = new StarSystem();
         starsystem.setStarId(resultset.getInt("star"));
         res.setStar(starsystem);
-            
+        statement.close();
+        connection.close();
     }catch(SQLException ex){
         Logger.getLogger(CoreDAO.class.getName()).log(Level.SEVERE, null, ex);
     }

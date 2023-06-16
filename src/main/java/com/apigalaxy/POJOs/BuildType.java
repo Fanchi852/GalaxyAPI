@@ -10,16 +10,25 @@ package com.apigalaxy.POJOs;
  */
 public class BuildType {
     
-    private Integer buildType_id;
+    private Integer buildType_id, production;
     private String name, description, image;
 
     public BuildType() {
     }
 
-    public BuildType(String name, String description, String image) {
+    public BuildType(String name, String description, String image, Integer production) {
         this.name = name;
         this.description = description;
         this.image = image;
+        this.production = production;
+    }
+
+    public Integer getProduction() {
+        return production;
+    }
+
+    public void setProduction(Integer production) {
+        this.production = production;
     }
 
     public Integer getBuildType_id() {
@@ -56,8 +65,7 @@ public class BuildType {
 
     @Override
     public String toString() {
-        return "BuildType{" + "buildType_id=" + buildType_id + ", name=" + name + ", description=" + description + ", image=" + image + '}';
+        return "BuildType{" + "buildType_id=" + buildType_id + ", production=" + production + ", name=" + name + ", description=" + description + ", image=" + image + '}';
     }
-    
     
 }

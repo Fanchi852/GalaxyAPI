@@ -15,30 +15,141 @@ import java.sql.Timestamp;
  */
 public class Fleet {
     
-    private Integer fleetId, coordinates, destination;
+    private Integer fleetId, destination, totalLife, life, totalShield, shield, totalDamage, damage, totalSpeed, speed;
+    public enum Status {ready, docked, upgrading, repairing};
+    private Status state;
     private FleetType fleetType;
     private Imperium imperium;
     private Planet base;
-    private String name, description, image;
-    private Timestamp departureTime;
+    private String name, description, image, coordinates;
+    private Timestamp departureTime, last_update;
     private Resources resources;
 
     public Fleet() {
     }
 
-    public Fleet(Resources resources, Integer coordinates, Integer destination, FleetType fleetType, Imperium imperium, Planet base, String name, String description, String image, Timestamp departureTime) {
-        this.coordinates = coordinates;
+    public Fleet(Integer destination, Integer totalLife, Integer life, Integer totalShield, Integer shield, Integer totalDamage, Integer damage, Integer totalSpeed, Integer speed, Status state, FleetType fleetType, Imperium imperium, Planet base, String name, String description, String image, String coordinates, Timestamp departureTime, Timestamp last_update, Resources resources) {
         this.destination = destination;
+        this.totalLife = totalLife;
+        this.life = life;
+        this.totalShield = totalShield;
+        this.shield = shield;
+        this.totalDamage = totalDamage;
+        this.damage = damage;
+        this.totalSpeed = totalSpeed;
+        this.speed = speed;
+        this.state = state;
         this.fleetType = fleetType;
         this.imperium = imperium;
         this.base = base;
         this.name = name;
         this.description = description;
         this.image = image;
+        this.coordinates = coordinates;
         this.departureTime = departureTime;
+        this.last_update = last_update;
         this.resources = resources;
     }
+    
+    public Boolean setState(String state) {
+        Boolean res = false;
+        switch(state){
+            case "ready":
+                this.state = Status.ready;
+                res = true;
+                break;
+            case "docked":
+                this.state = Status.docked;
+                res = true;
+                break;
+            case "upgrading":
+                this.state = Status.upgrading;
+                res = true;
+                break;
+            case "repairing":
+                this.state = Status.repairing;
+                res = true;
+                break;
+        }
+        return res;
+    }
 
+    public Integer getTotalLife() {
+        return totalLife;
+    }
+
+    public void setTotalLife(Integer totalLife) {
+        this.totalLife = totalLife;
+    }
+
+    public Integer getTotalShield() {
+        return totalShield;
+    }
+
+    public void setTotalShield(Integer totalShield) {
+        this.totalShield = totalShield;
+    }
+
+    public Integer getTotalDamage() {
+        return totalDamage;
+    }
+
+    public void setTotalDamage(Integer totalDamage) {
+        this.totalDamage = totalDamage;
+    }
+
+    public Integer getTotalSpeed() {
+        return totalSpeed;
+    }
+
+    public void setTotalSpeed(Integer totalSpeed) {
+        this.totalSpeed = totalSpeed;
+    }
+    
+    public Timestamp getLast_update() {
+        return last_update;
+    }
+
+    public void setLast_update(Timestamp last_update) {
+        this.last_update = last_update;
+    }
+
+    public Integer getLife() {
+        return life;
+    }
+
+    public void setLife(Integer life) {
+        this.life = life;
+    }
+
+    public Integer getShield() {
+        return shield;
+    }
+
+    public void setShield(Integer shield) {
+        this.shield = shield;
+    }
+
+    public Integer getDamage() {
+        return damage;
+    }
+
+    public void setDamage(Integer damage) {
+        this.damage = damage;
+    }
+
+    public Integer getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Integer speed) {
+        this.speed = speed;
+    }
+
+    public Status getState() {
+        return state;
+    }
+    
     public Integer getFleetId() {
         return fleetId;
     }
@@ -55,11 +166,11 @@ public class Fleet {
         this.fleetId = fleetId;
     }
 
-    public Integer getCoordinates() {
+    public String getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(Integer coordinates) {
+    public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -129,9 +240,7 @@ public class Fleet {
 
     @Override
     public String toString() {
-        return "Fleet{" + "fleetId=" + fleetId + ", coordinates=" + coordinates + ", destination=" + destination + ", fleetType=" + fleetType + ", imperium=" + imperium + ", base=" + base + ", name=" + name + ", description=" + description + ", image=" + image + ", departureTime=" + departureTime + ", resources=" + resources + '}';
+        return "Fleet{" + "fleetId=" + fleetId + ", destination=" + destination + ", totalLife=" + totalLife + ", life=" + life + ", totalShield=" + totalShield + ", shield=" + shield + ", totalDamage=" + totalDamage + ", damage=" + damage + ", totalSpeed=" + totalSpeed + ", speed=" + speed + ", state=" + state + ", fleetType=" + fleetType + ", imperium=" + imperium + ", base=" + base + ", name=" + name + ", description=" + description + ", image=" + image + ", coordinates=" + coordinates + ", departureTime=" + departureTime + ", last_update=" + last_update + ", resources=" + resources + '}';
     }
-    
-    
     
 }

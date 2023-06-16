@@ -27,13 +27,14 @@ public class BuildTypeDAO implements com.apigalaxy.interfaces.IDAO<BuildType, Ma
     private final String DB_TABLE = "buildType";
     private final String ID_OBJECT = "buildType_id";
     //aqui almacenamos las 4 sentencias CRUD
-    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, description, image) VALUES (?, ?, ?)";
+    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, description, image, production) VALUES (?, ?, ?, ?)";
     private final String DELETE = "DELETE FROM " + DB_TABLE + " WHERE " + ID_OBJECT + " = ?";
     private final String FIND_BY = "SELECT * FROM " + DB_TABLE;
     private final String UPDATE = "UPDATE " + DB_TABLE + " SET "
             + "name = ?,  "
             + "description = ?, "
-            + "image = ? "
+            + "image = ?, "
+            + "production = ?, "
             + "WHERE " + ID_OBJECT + " = ?";
     //por ultimo la conexion
     private Connection connection;
@@ -54,17 +55,18 @@ public class BuildTypeDAO implements com.apigalaxy.interfaces.IDAO<BuildType, Ma
             statement.setString(1, buildType.getName());
             statement.setString(2, buildType.getDescription());
             statement.setString(3, buildType.getImage());
+            statement.setInt(4, buildType.getProduction());
             //ejecutamos el statment y almacenamos la respuesta
             Integer respons = statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 res = (int) generatedKeys.getLong(1);
             }
-                    
+            statement.close();
+            connection.close();
         }catch(SQLException ex) {
             Logger.getLogger(BuildTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return res;
     }
 
@@ -78,6 +80,8 @@ public class BuildTypeDAO implements com.apigalaxy.interfaces.IDAO<BuildType, Ma
             statement.setInt(1, buildType.getBuildType_id());
             //ejecutamos la sentencia y almacenamos la respuesta que sear true en caso de no haber habido fallos
             res = statement.execute();
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(BuildTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -140,9 +144,12 @@ public class BuildTypeDAO implements com.apigalaxy.interfaces.IDAO<BuildType, Ma
                 newBuildType.setName(res.getString("name"));
                 newBuildType.setDescription(res.getString("description"));
                 newBuildType.setImage(res.getString("image"));
+                newBuildType.setProduction(res.getInt("production"));
                 //Añadir el objeto TechnologyImperium a la lista technologyImperiums
                 buildTypes.add(newBuildType);
             }
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(BuildTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -153,20 +160,20 @@ public class BuildTypeDAO implements com.apigalaxy.interfaces.IDAO<BuildType, Ma
     public Integer update(BuildType buildType) {
     //preparamos la respuesta en false para informar en caso de fallo
         Integer res = 0;
-        
         try {
             //preparamos y ejecutamos la sentencia almacenando y devolviendo la respuesta
             PreparedStatement statement = connection.prepareStatement(UPDATE);
             statement.setString(1, buildType.getName());
             statement.setString(2, buildType.getDescription());
             statement.setString(3, buildType.getImage());
-            statement.setInt(4, buildType.getBuildType_id());
-            
+            statement.setInt(4, buildType.getProduction());
+            statement.setInt(5, buildType.getBuildType_id());
             res = statement.executeUpdate();
+            statement.close();
+            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(BuildTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return res;
     }
     

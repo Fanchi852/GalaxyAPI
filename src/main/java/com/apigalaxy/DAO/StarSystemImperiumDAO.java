@@ -8,6 +8,7 @@ import com.apigalaxy.DAOFactory.MysqlDAOFactory;
 import com.apigalaxy.POJOs.Imperium;
 import com.apigalaxy.POJOs.StarSystem;
 import com.apigalaxy.POJOs.StarSystemImperium;
+import com.apigalaxy.routines.Routines;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -140,9 +141,10 @@ public class StarSystemImperiumDAO implements com.apigalaxy.interfaces.IDAO<Star
                 Imperium imperium = new Imperium();
                 imperium.setImperiumId(res.getInt("imperium"));
                 newStarSystemImperium.setImperium(imperium);
-                StarSystem starSystem = new StarSystem();
-                starSystem.setStarId(res.getInt("starSystem"));
-                newStarSystemImperium.setStar(starSystem);
+                Routines routines = new Routines();
+                StarSystemDAO starSystemdao = new StarSystemDAO();
+                List<StarSystem> starSystemList = starSystemdao.findBy(routines.constructMap("star_id",res.getString("starSystem")));
+                newStarSystemImperium.setStar(starSystemList.get(0));
                 //Añadir el objeto TechnologyImperium a la lista technologyImperiums
                 starSystemImperium.add(newStarSystemImperium);
             }

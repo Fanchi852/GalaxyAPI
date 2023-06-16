@@ -4,6 +4,8 @@
  */
 package com.apigalaxy.POJOs;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author Francsico Jesus Moya Olivares
@@ -17,6 +19,7 @@ public class Imperium {
     private String name;
     private User user;
     private Planet planet;
+    private Timestamp last_update;
 
     public Imperium() {
     }

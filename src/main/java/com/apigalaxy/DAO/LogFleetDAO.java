@@ -30,24 +30,31 @@ public class LogFleetDAO implements com.apigalaxy.interfaces.IDAO<LogFleet, Map<
     private final String DB_TABLE = "logFleet";
     private final String ID_OBJECT = "logFleet_id";
     //aqui almacenamos las 4 sentencias CRUD
-    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, descripcion, type, strategy, repairs, engineering, speed, live, shield, coordinates, destination, departure_time, resources, base, image, owner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, descripcion, type, strategy, logistics, engineering, total_life, life, total_shield, shield, total_damage, damage, total_speed, speed, coordinates, destination, departure_time, resources, state, base, last_update, image, owner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String DELETE = "DELETE FROM " + DB_TABLE + " WHERE " + ID_OBJECT + " = ?";
     private final String FIND_BY = "SELECT * FROM " + DB_TABLE;
     private final String UPDATE = "UPDATE " + DB_TABLE + " SET "
             + "name = ?,  "
             + "descripcion = ?, "
-            + "fleettype = ?, "
+            + "type = ?, "
             + "strategy = ?, "
-            + "repairs = ?, "
+            + "logistics = ?, "
             + "engineering = ?, "
-            + "speed = ?, "
-            + "live = ?, "
+            + "total_life = ?, "
+            + "life = ?, "
+            + "total_shield = ?, "
             + "shield = ?, "
+            + "total_damage = ?, "
+            + "damage = ?, "
+            + "total_speed = ?, "
+            + "speed = ?, "
             + "coordinates = ?, "
             + "destination = ?, "
             + "departure_time = ?, "
             + "resources = ?, "
+            + "state = ?, "
             + "base = ?, "
+            + "last_update = ?, "
             + "image = ?, "
             + "owner = ? "
             + "WHERE " + ID_OBJECT + " = ?";
@@ -71,25 +78,33 @@ public class LogFleetDAO implements com.apigalaxy.interfaces.IDAO<LogFleet, Map<
             statement.setString(2, logFleet.getDescription());
             statement.setString(3, logFleet.getfType().name());
             statement.setFloat(4, logFleet.getStrategy());
-            statement.setFloat(5, logFleet.getRepairs());
-            statement.setFloat(6, logFleet.getShield());
-            statement.setInt(7, logFleet.getSpeed());
-            statement.setInt(8, logFleet.getLive());
-            statement.setInt(9, logFleet.getShield());
-            statement.setInt(10, logFleet.getCoordinates());
-            statement.setInt(11, logFleet.getDestination());
-            statement.setTimestamp(12, logFleet.getDepartureTime());
-            statement.setInt(13, logFleet.getResources().getResourceId());
-            statement.setInt(14, logFleet.getBase().getPlanetId());
-            statement.setString(15, logFleet.getImage());
-            statement.setInt(16, logFleet.getImperium().getImperiumId());
+            statement.setFloat(5, logFleet.getLogistics());
+            statement.setFloat(6, logFleet.getEngineering());
+            statement.setInt(7, logFleet.getTotalLife());
+            statement.setInt(8, logFleet.getLife());
+            statement.setInt(9, logFleet.getTotalShield());
+            statement.setInt(10, logFleet.getShield());
+            statement.setInt(11, logFleet.getTotalDamage());
+            statement.setInt(12, logFleet.getDamage());
+            statement.setInt(13, logFleet.getTotalSpeed());
+            statement.setInt(14, logFleet.getSpeed());
+            statement.setInt(15, logFleet.getCoordinates());
+            statement.setInt(16, logFleet.getDestination());
+            statement.setTimestamp(17, logFleet.getDepartureTime());
+            statement.setInt(18, logFleet.getResources().getResourceId());
+            statement.setString(19, logFleet.getState().name());
+            statement.setInt(20, logFleet.getBase().getPlanetId());
+            statement.setTimestamp(21, logFleet.getLast_update());
+            statement.setString(22, logFleet.getImage());
+            statement.setInt(23, logFleet.getImperium().getImperiumId());
             //ejecutamos el statment y almacenamos la respuesta
             Integer respons = statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 res = (int) generatedKeys.getLong(1);
             }
-                    
+            statement.close();
+            connection.close();
         }catch(SQLException ex) {
             Logger.getLogger(LogFleetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -107,6 +122,8 @@ public class LogFleetDAO implements com.apigalaxy.interfaces.IDAO<LogFleet, Map<
             statement.setInt(1, logFleet.getLogFleetId());
             //ejecutamos la sentencia y almacenamos la respuesta que sear true en caso de no haber habido fallos
             res = statement.execute();
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(LogFleetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -166,26 +183,35 @@ public class LogFleetDAO implements com.apigalaxy.interfaces.IDAO<LogFleet, Map<
                 newLogFleet.setDescription(res.getString("descripcion"));
                 newLogFleet.setfType(res.getString("type"));
                 newLogFleet.setStrategy(res.getFloat("strategy"));
-                newLogFleet.setRepairs(res.getFloat("repairs"));
+                newLogFleet.setLogistics(res.getFloat("logistics"));
                 newLogFleet.setEngineering(res.getFloat("engineering"));
-                newLogFleet.setSpeed(res.getInt("speed"));
-                newLogFleet.setLive(res.getInt("live"));
+                newLogFleet.setTotalLife(res.getInt("total_life"));
+                newLogFleet.setLife(res.getInt("life"));
+                newLogFleet.setTotalShield(res.getInt("total_shield"));
                 newLogFleet.setShield(res.getInt("shield"));
+                newLogFleet.setTotalDamage(res.getInt("total_damage"));
+                newLogFleet.setDamage(res.getInt("damage"));
+                newLogFleet.setTotalSpeed(res.getInt("total_speed"));
+                newLogFleet.setSpeed(res.getInt("speed"));
                 newLogFleet.setCoordinates(res.getInt("coordinates"));
                 newLogFleet.setDestination(res.getInt("destination"));
                 newLogFleet.setDepartureTime(res.getTimestamp("departure_time"));
                 Resources resources = new Resources();
                 resources.setResourceId(res.getInt("resources"));
+                newLogFleet.setState(res.getString("state"));
                 newLogFleet.setResources(resources);
                 Planet planet = new Planet();
                 planet.setPlanetId(res.getInt("base"));
                 newLogFleet.setBase(planet);
+                newLogFleet.setLast_update(res.getTimestamp("last_update"));
                 newLogFleet.setImage(res.getString("image"));
                 Imperium imperium = new Imperium();
                 imperium.setImperiumId(res.getInt("owner"));
                 newLogFleet.setImperium(imperium);
                 logFleets.add(newLogFleet);
             }
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(LogFleetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -203,21 +229,30 @@ public class LogFleetDAO implements com.apigalaxy.interfaces.IDAO<LogFleet, Map<
             statement.setString(2, logFleet.getDescription());
             statement.setString(3, logFleet.getfType().name());
             statement.setFloat(4, logFleet.getStrategy());
-            statement.setFloat(5, logFleet.getRepairs());
-            statement.setFloat(6, logFleet.getShield());
-            statement.setInt(7, logFleet.getSpeed());
-            statement.setInt(8, logFleet.getLive());
-            statement.setInt(9, logFleet.getShield());
-            statement.setInt(10, logFleet.getCoordinates());
-            statement.setInt(11, logFleet.getDestination());
-            statement.setTimestamp(12, logFleet.getDepartureTime());
-            statement.setInt(13, logFleet.getResources().getResourceId());
-            statement.setInt(14, logFleet.getBase().getPlanetId());
-            statement.setString(15, logFleet.getImage());
-            statement.setInt(16, logFleet.getImperium().getImperiumId());
-            statement.setInt(17, logFleet.getLogFleetId());
+            statement.setFloat(5, logFleet.getLogistics());
+            statement.setFloat(6, logFleet.getEngineering());
+            statement.setInt(7, logFleet.getTotalLife());
+            statement.setInt(8, logFleet.getLife());
+            statement.setInt(9, logFleet.getTotalShield());
+            statement.setInt(10, logFleet.getShield());
+            statement.setInt(11, logFleet.getTotalDamage());
+            statement.setInt(12, logFleet.getDamage());
+            statement.setInt(13, logFleet.getTotalSpeed());
+            statement.setInt(14, logFleet.getSpeed());
+            statement.setInt(15, logFleet.getCoordinates());
+            statement.setInt(16, logFleet.getDestination());
+            statement.setTimestamp(17, logFleet.getDepartureTime());
+            statement.setInt(18, logFleet.getResources().getResourceId());
+            statement.setString(19, logFleet.getState().name());
+            statement.setInt(20, logFleet.getBase().getPlanetId());
+            statement.setTimestamp(21, logFleet.getLast_update());
+            statement.setString(22, logFleet.getImage());
+            statement.setInt(23, logFleet.getImperium().getImperiumId());
+            statement.setInt(24, logFleet.getLogFleetId());
             
             res = statement.executeUpdate();
+            statement.close();
+            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(LogFleetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

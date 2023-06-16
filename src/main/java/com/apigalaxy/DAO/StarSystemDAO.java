@@ -138,7 +138,7 @@ public class StarSystemDAO implements com.apigalaxy.interfaces.IDAO<StarSystem, 
                 //Establecemos los valores de las propiedades usando los datos de la fila del ResultSet
                 newStarSystem.setStarId(res.getInt("star_id"));
                 newStarSystem.setName(res.getString("name"));
-                newStarSystem.setDescription(res.getString("description"));
+                newStarSystem.setDescription(res.getString("descripcion"));
                 newStarSystem.setHabitability(res.getFloat("habitability"));
                 //Añadir el objeto TechnologyImperium a la lista technologyImperiums
                 StarSystems.add(newStarSystem);

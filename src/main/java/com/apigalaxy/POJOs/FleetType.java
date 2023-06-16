@@ -14,16 +14,16 @@ package com.apigalaxy.POJOs;
 public class FleetType {
     
     private Integer fleetTypeId;
-    private Float strategy, repairs, engineering;
+    private Float strategy, logistics, engineering;
     public enum FType {transport, exploration, military}
     private FType ftype;
 
     public FleetType() {
     }
 
-    public FleetType(Float strategy, Float repairs, Float engineering, FType ftype) {
+    public FleetType(Float strategy, Float logistics, Float engineering, FType ftype) {
         this.strategy = strategy;
-        this.repairs = repairs;
+        this.logistics = logistics;
         this.engineering = engineering;
         this.ftype = ftype;
     }
@@ -44,12 +44,12 @@ public class FleetType {
         this.strategy = strategy;
     }
 
-    public Float getRepairs() {
-        return repairs;
+    public Float getLogistics() {
+        return logistics;
     }
 
-    public void setRepairs(Float repairs) {
-        this.repairs = repairs;
+    public void setLogistics(Float logistics) {
+        this.logistics = logistics;
     }
 
     public Float getEngineering() {
@@ -85,7 +85,7 @@ public class FleetType {
 
     @Override
     public String toString() {
-        return "FleetType{" + "fleetTypeId=" + fleetTypeId + ", strategy=" + strategy + ", repairs=" + repairs + ", engineering=" + engineering + ", ftype=" + ftype + '}';
+        return "FleetType{" + "fleetTypeId=" + fleetTypeId + ", strategy=" + strategy + ", logistics=" + logistics + ", engineering=" + engineering + ", ftype=" + ftype + '}';
     }
     
     

@@ -173,7 +173,7 @@ public class TechnologyImperiumDAO implements com.apigalaxy.interfaces.IDAO<Tech
             statement.setInt(2, technologyImperium.getImperium().getImperiumId());
             statement.setInt(3, technologyImperium.getTechnology().getTechnologyId());
             statement.setInt(4, technologyImperium.getTechnologyImperiumId());
-            
+            System.out.println("SLQ SENCENCE: " + statement);
             res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(TechnologyImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);

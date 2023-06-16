@@ -26,13 +26,13 @@ public class FleetTypeDAO implements com.apigalaxy.interfaces.IDAO<FleetType, Ma
     private final String DB_TABLE = "fleetType";
     private final String ID_OBJECT = "fleetType_id";
     //aqui almacenamos las 4 sentencias CRUD
-    private final String ADD = "INSERT INTO " + DB_TABLE + " (type, strategy, repairs, engineering) VALUES (?, ?, ?, ?)";
+    private final String ADD = "INSERT INTO " + DB_TABLE + " (type, strategy, logistics, engineering) VALUES (?, ?, ?, ?)";
     private final String DELETE = "DELETE FROM " + DB_TABLE + " WHERE " + ID_OBJECT + " = ?";
     private final String FIND_BY = "SELECT * FROM " + DB_TABLE;
     private final String UPDATE = "UPDATE " + DB_TABLE + " SET "
             + "type = ?,  "
             + "strategy = ?, "
-            + "repairs = ?, "
+            + "logistics = ?, "
             + "engineering = ? "
             + "WHERE " + ID_OBJECT + " = ?";
     //por ultimo la conexion
@@ -53,7 +53,7 @@ public class FleetTypeDAO implements com.apigalaxy.interfaces.IDAO<FleetType, Ma
             PreparedStatement statement = connection.prepareStatement(ADD, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, fleetType.getFtype().name());
             statement.setFloat(2, fleetType.getStrategy());
-            statement.setFloat(3, fleetType.getRepairs());
+            statement.setFloat(3, fleetType.getLogistics());
             statement.setFloat(4, fleetType.getEngineering());
             //ejecutamos el statment y almacenamos la respuesta
             Integer respons = statement.executeUpdate();
@@ -61,7 +61,8 @@ public class FleetTypeDAO implements com.apigalaxy.interfaces.IDAO<FleetType, Ma
             if (generatedKeys.next()) {
                 res = (int) generatedKeys.getLong(1);
             }
-                    
+            statement.close();
+            connection.close();
         }catch(SQLException ex) {
             Logger.getLogger(FleetTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -79,6 +80,8 @@ public class FleetTypeDAO implements com.apigalaxy.interfaces.IDAO<FleetType, Ma
             statement.setInt(1, fleetType.getFleetTypeId());
             //ejecutamos la sentencia y almacenamos la respuesta que sear true en caso de no haber habido fallos
             res = statement.execute();
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(FleetTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -136,10 +139,11 @@ public class FleetTypeDAO implements com.apigalaxy.interfaces.IDAO<FleetType, Ma
                 newFleetType.setFleetTypeId(res.getInt("fleetType_id"));
                 newFleetType.setFtype(res.getString("type"));
                 newFleetType.setStrategy(res.getFloat("strategy"));
-                newFleetType.setRepairs(res.getFloat("repairs"));
+                newFleetType.setLogistics(res.getFloat("logistics"));
                 newFleetType.setEngineering(res.getFloat("engineering"));
                 fleetTypes.add(newFleetType);
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(FleetTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -155,11 +159,13 @@ public class FleetTypeDAO implements com.apigalaxy.interfaces.IDAO<FleetType, Ma
             PreparedStatement statement = connection.prepareStatement(UPDATE, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, fleetType.getFtype().name());
             statement.setFloat(2, fleetType.getStrategy());
-            statement.setFloat(3, fleetType.getRepairs());
+            statement.setFloat(3, fleetType.getLogistics());
             statement.setFloat(4, fleetType.getEngineering());
             statement.setInt(5, fleetType.getFleetTypeId());
             
             res = statement.executeUpdate();
+            statement.close();
+            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(FleetTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

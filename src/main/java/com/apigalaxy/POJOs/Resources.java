@@ -4,6 +4,8 @@
  */
 package com.apigalaxy.POJOs;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author Francisco Jesus Moya Olivares
@@ -14,6 +16,7 @@ package com.apigalaxy.POJOs;
 public class Resources {
     
     private Integer resourceId, normal_quantity, rare_quantity, population_quantity, normal_capacity, rare_capacity, population_capacity;
+    private Timestamp last_update;
 
     public Resources() {
     }

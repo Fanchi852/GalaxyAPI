@@ -64,6 +64,8 @@ public class LogBattleTechnologyDAO implements com.apigalaxy.interfaces.IDAO<Log
             if (generatedKeys.next()) {
                 res = (int) generatedKeys.getLong(1);
             }     
+            statement.close();
+            connection.close();
         }catch(SQLException ex) {
             Logger.getLogger(LogBattleTechnologyDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -80,6 +82,8 @@ public class LogBattleTechnologyDAO implements com.apigalaxy.interfaces.IDAO<Log
             statement.setInt(1, logBattleTechnology.getLogBattleTechnologyId());
             //ejecutamos la sentencia y almacenamos la respuesta que sear true en caso de no haber habido fallos
             res = statement.execute();
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(LogBattleTechnologyDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -147,6 +151,8 @@ public class LogBattleTechnologyDAO implements com.apigalaxy.interfaces.IDAO<Log
                 newLogBattleTechnology.setLogBattle(logBattle);
                 LogBattleTechnologies.add(newLogBattleTechnology);
             }
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(LogBattleTechnologyDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -167,6 +173,8 @@ public class LogBattleTechnologyDAO implements com.apigalaxy.interfaces.IDAO<Log
             statement.setInt(5, logBattleTechnology.getLogBattleTechnologyId());
             
             res = statement.executeUpdate();
+            statement.close();
+            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(LogBattleTechnologyDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

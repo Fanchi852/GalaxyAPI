@@ -1,4 +1,4 @@
-/*
+  /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -25,19 +25,22 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
     
     //almacenamos los datos necesarios para crear los statment, de esta manera nos sera mas facil alterarlos si fuese necesario
     private final String DB_TABLE = "shipClass";
-    private final String ID_OBJECT = "sipClass_id";
+    private final String ID_OBJECT = "shipClass_id";
     //aqui almacenamos las 4 sentencias CRUD
-    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, descripcion, basic_life, basic_shield, basic_damage, basic_normal_cost, basic_rare_cost, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String ADD = "INSERT INTO " + DB_TABLE + " (name, descripcion, basic_storage_capacity, basic_life, basic_shield, basic_damage, basic_speed, basic_normal_cost, basic_rare_cost, basic_people_cost, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String DELETE = "DELETE FROM " + DB_TABLE + " WHERE " + ID_OBJECT + " = ?";
     private final String FIND_BY = "SELECT * FROM " + DB_TABLE;
     private final String UPDATE = "UPDATE " + DB_TABLE + " SET "
             + "name = ?,  "
             + "descripcion = ?, "
+            + "basic_storage_capacity = ?, "
             + "basic_life = ?, "
             + "basic_shield = ?, "
             + "basic_damage = ?, "
+            + "basic_speed = ?, "
             + "basic_normal_cost = ?, "
             + "basic_rare_cost = ?, "
+            + "basic_people_cost = ?, "
             + "image = ? "
             + "WHERE " + ID_OBJECT + " = ?";
     //por ultimo la conexion
@@ -58,12 +61,15 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
             PreparedStatement statement = connection.prepareStatement(ADD, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, shipClass.getName());
             statement.setString(2, shipClass.getDescription());
-            statement.setInt(3, shipClass.getBasicLife());
-            statement.setInt(4, shipClass.getBasicShield());
-            statement.setInt(5, shipClass.getBasicDamage());
-            statement.setInt(6, shipClass.getBasic_normal_cost());
-            statement.setInt(7, shipClass.getBasic_rare_cost());
-            statement.setString(8, shipClass.getImage());
+            statement.setInt(3, shipClass.getBasicStorage());
+            statement.setInt(4, shipClass.getBasicLife());
+            statement.setInt(5, shipClass.getBasicShield());
+            statement.setInt(6, shipClass.getBasicDamage());
+            statement.setInt(7, shipClass.getBasicSpeed());
+            statement.setInt(8, shipClass.getBasic_normal_cost());
+            statement.setInt(9, shipClass.getBasic_rare_cost());
+            statement.setInt(10, shipClass.getBasic_people_cost());
+            statement.setString(11, shipClass.getImage());
             //ejecutamos el statment y almacenamos la respuesta
             Integer respons = statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -143,14 +149,17 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
             while (res.next()){
                 ShipClass newShipClass = new ShipClass();
                 
-                newShipClass.setShipClassId(res.getInt("sipClass_id"));
+                newShipClass.setShipClassId(res.getInt("shipClass_id"));
                 newShipClass.setName(res.getString("name"));
                 newShipClass.setDescription(res.getString("description"));
+                newShipClass.setBasicStorage(res.getInt("basic_storage_capacity"));
                 newShipClass.setBasicLife(res.getInt("basic_life"));
                 newShipClass.setBasicShield(res.getInt("basic_shield"));
                 newShipClass.setBasicDamage(res.getInt("basic_damage"));
+                newShipClass.setBasicSpeed(res.getInt("basic_speed"));
                 newShipClass.setBasic_normal_cost(res.getInt("basic_normal_cost"));
                 newShipClass.setBasic_rare_cost(res.getInt("basic_rare_cost"));
+                newShipClass.setBasic_people_cost(res.getInt("basic_people_cost"));
                 newShipClass.setImage(res.getString("image"));
                 shipClases.add(newShipClass);
             }
@@ -162,32 +171,28 @@ public class ShipClassDAO implements com.apigalaxy.interfaces.IDAO<ShipClass, Ma
 
     @Override
     public Integer update(ShipClass shipClass) {
-        
         //preparamos la respuesta en false para informar en caso de fallo
         Integer res = 0;
-        
         try {
             // usamos la conexxion para preparar el statment 
             PreparedStatement statement = connection.prepareStatement(UPDATE, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, shipClass.getName());
             statement.setString(2, shipClass.getDescription());
-            statement.setInt(3, shipClass.getBasicLife());
-            statement.setInt(4, shipClass.getBasicShield());
-            statement.setInt(5, shipClass.getBasicDamage());
-            statement.setInt(6, shipClass.getBasic_normal_cost());
-            statement.setInt(7, shipClass.getBasic_rare_cost());
-            statement.setString(8, shipClass.getImage());
-            statement.setInt(9, shipClass.getShipClassId());
+            statement.setInt(3, shipClass.getBasicStorage());
+            statement.setInt(4, shipClass.getBasicLife());
+            statement.setInt(5, shipClass.getBasicShield());
+            statement.setInt(6, shipClass.getBasicDamage());
+            statement.setInt(7, shipClass.getBasicSpeed());
+            statement.setInt(8, shipClass.getBasic_normal_cost());
+            statement.setInt(9, shipClass.getBasic_rare_cost());
+            statement.setInt(10, shipClass.getBasic_people_cost());
+            statement.setString(11, shipClass.getImage());
+            statement.setInt(12, shipClass.getShipClassId());
             
             res = statement.executeUpdate();
         } catch (SQLException ex){
             Logger.getLogger(ShipClassDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return res;
-        
     }
-    
-    
-    
 }

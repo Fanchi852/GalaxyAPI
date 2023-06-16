@@ -60,7 +60,8 @@ public class LogNavigationDAO implements com.apigalaxy.interfaces.IDAO<LogNaviga
             if (generatedKeys.next()) {
                 res = (int) generatedKeys.getLong(1);
             }
-                    
+            statement.close();
+            connection.close();
         }catch(SQLException ex) {
             Logger.getLogger(LogNavigationDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -78,6 +79,8 @@ public class LogNavigationDAO implements com.apigalaxy.interfaces.IDAO<LogNaviga
             statement.setInt(1, logNavigation.getLogNavigationId());
             //ejecutamos la sentencia y almacenamos la respuesta que sear true en caso de no haber habido fallos
             res = statement.execute();
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(LogNavigationDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -140,6 +143,8 @@ public class LogNavigationDAO implements com.apigalaxy.interfaces.IDAO<LogNaviga
                 newLogNavigation.setFleet(lf);
                 logNavigations.add(newLogNavigation);
             }
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(LogNavigationDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -159,6 +164,8 @@ public class LogNavigationDAO implements com.apigalaxy.interfaces.IDAO<LogNaviga
             statement.setInt(4, logNavigation.getLogNavigationId());
             
             res = statement.executeUpdate();
+            statement.close();
+            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(LogNavigationDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

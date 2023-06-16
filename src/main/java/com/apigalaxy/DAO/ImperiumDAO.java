@@ -63,7 +63,8 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
             if (generatedKeys.next()) {
                 res = (int) generatedKeys.getLong(1);
             }
-                    
+            statement.close();
+            connection.close();
         }catch(SQLException ex) {
             Logger.getLogger(ImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,7 +83,8 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
             statement.setInt(1, imperium.getImperiumId());
             //ejecutamos la sentencia y almacenamos la respuesta que sear true en caso de no haber habido fallos
             res = statement.execute();
-            
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(ImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -154,7 +156,8 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
                 imperiums.add(newImperium);
                 
             }
-            
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(ImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -177,6 +180,8 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
             statement.setInt(5, imperium.getImperiumId());
             
             res = statement.executeUpdate();
+            statement.close();
+            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(ImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -201,7 +206,8 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
             List<Planet> planetList = planetDAO.findBy(routines.constructMap("planet_id", resultset.getString("planet")));
             Planet planet = planetList.get(0);
             res.setPlanet(planet);
-
+            statement.close();
+            connection.close();
         }catch(SQLException ex){
             Logger.getLogger(ImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

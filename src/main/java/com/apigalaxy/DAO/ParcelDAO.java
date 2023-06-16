@@ -90,7 +90,8 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
             if (generatedKeys.next()) {
                 res = (int) generatedKeys.getLong(1);
             }
-                    
+            statement.close();
+            connection.close();
         }catch(SQLException ex) {
             Logger.getLogger(ParcelDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -108,6 +109,8 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
             statement.setInt(1, parcel.getParcelId());
             //ejecutamos la sentencia y almacenamos la respuesta que sear true en caso de no haber habido fallos
             res = statement.execute();
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(ParcelDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -192,7 +195,6 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
                 
                 parcels.add(newParcel);
             }
-            
         } catch (SQLException ex) {
             Logger.getLogger(ParcelDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -230,6 +232,8 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
             statement.setInt(10, parcel.getParcelId());
             
             res = statement.executeUpdate();
+            statement.close();
+            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(ParcelDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -255,6 +259,8 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
             ParcelDAO parcelDAO = new ParcelDAO();
             List<Parcel> parcelList = parcelDAO.findBy(routines.constructMap("parcel_id", result.toString()));
             res = parcelList.get(0);
+            callableStatement.close();
+            connection.close();
         }catch(SQLException ex){
             Logger.getLogger(ParcelDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -306,14 +312,14 @@ public class ParcelDAO implements com.apigalaxy.interfaces.IDAO<Parcel, Map<Stri
 
                 List<Parcel> parcelList1 = parcelDAO.findBy(routines.constructMap("parcel_id", parcel.getParcelId().toString()));
                 res = parcelList1.get(0);
+                statement.close();
+                connection.close();
             }else{
                 res = parcelaux;
             }
-            
         }catch(SQLException ex){
             Logger.getLogger(ParcelDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return res;
     }
     

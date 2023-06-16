@@ -79,7 +79,8 @@ public class MoomDAO implements com.apigalaxy.interfaces.IDAO<Moon, Map<String, 
             if (generatedKeys.next()) {
                 res = (int) generatedKeys.getLong(1);
             }
-                    
+            statement.close();
+            connection.close();
         }catch(SQLException ex) {
             Logger.getLogger(MoomDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -97,6 +98,8 @@ public class MoomDAO implements com.apigalaxy.interfaces.IDAO<Moon, Map<String, 
             statement.setInt(1, moon.getMoonId());
             //ejecutamos la sentencia y almacenamos la respuesta que sear true en caso de no haber habido fallos
             res = statement.execute();
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(MoomDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -175,6 +178,8 @@ public class MoomDAO implements com.apigalaxy.interfaces.IDAO<Moon, Map<String, 
                 //Añadir el objeto TechnologyImperium a la lista technologyImperiums
                 moons.add(newMoon);
             }
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(MoomDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -203,6 +208,8 @@ public class MoomDAO implements com.apigalaxy.interfaces.IDAO<Moon, Map<String, 
             statement.setInt(12, moon.getMoonId());
             
             res = statement.executeUpdate();
+            statement.close();
+            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(MoomDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

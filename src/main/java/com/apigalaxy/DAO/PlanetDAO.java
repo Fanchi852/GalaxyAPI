@@ -83,7 +83,8 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
             if (generatedKeys.next()) {
                 res = (int) generatedKeys.getLong(1);
             }
-                    
+            statement.close();
+            connection.close();
         }catch(SQLException ex) {
             Logger.getLogger(PlanetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -101,6 +102,8 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
             statement.setInt(1, planet.getPlanetId());
             //ejecutamos la sentencia y almacenamos la respuesta que sear true en caso de no haber habido fallos
             res = statement.execute();
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(PlanetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -109,7 +112,7 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
 
     @Override
     public List findBy(Map<String, String[]> filter) {
-        //intentaremos traer los datos actualizados de los recursos del planeta si es que tenemos el id
+        //intentaremos traer los datos actualizados de los recursos si es que tenemos el id
         ResourcesDAO resourcesDAO = new ResourcesDAO();
         try{
             resourcesDAO.quantity_resources_update(Integer.parseInt(filter.get("planet_id")[0]));
@@ -189,15 +192,22 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
                 newPlanet.setRareOreProduction(res.getInt("rare_ore_production"));
                 newPlanet.setPopulation_changes(res.getInt("population_changes"));
                 newPlanet.setCientific_data_changes(res.getInt("cientific_data_changes"));
+                try{
                 List<Resources> resourcesList = resourcesDAO.findBy(routines.constructMap("resources_id", res.getString("resources")));
                 Resources resources = resourcesList.get(0);
                 newPlanet.setResources(resources);
+                }catch(Exception error){
+                    
+                }
                 StarSystem starsystem = new StarSystem();
                 starsystem.setStarId(res.getInt("star"));
                 newPlanet.setStar(starsystem);
+                //System.out.println("------->>>>> planeta: "+newPlanet.toString());
                 //Añadir el objeto TechnologyImperium a la lista technologyImperiums
                 planets.add(newPlanet);
             }
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(PlanetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -227,6 +237,8 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
             statement.setInt(13, planet.getPlanetId());
             
             res = statement.executeUpdate();
+            statement.close();
+            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(PlanetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -241,6 +253,8 @@ public class PlanetDAO implements com.apigalaxy.interfaces.IDAO<Planet, Map<Stri
         try{
             PreparedStatement statement = connection.prepareStatement(CALL);
             statement.executeQuery();
+            statement.close();
+            connection.close();
         }catch(SQLException ex){
             Logger.getLogger(PlanetDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

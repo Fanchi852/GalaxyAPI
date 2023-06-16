@@ -27,7 +27,7 @@ import java.util.Map;
  *
  * @author Francisco Jesus Moya Olivares
  */
-@Path("Technology")
+@Path("technology")
 public class RestTechnology {
     
     @POST
@@ -58,12 +58,21 @@ public class RestTechnology {
         Response response;
         
         List<TechnologyImperium> technologyImperiumList = technologyImperiumDAO.findBy(routines.constructMap("technology_imperium_id", technologyImperium.getTechnologyImperiumId().toString()));
-        List<Imperium> imperiumList = impDAO.findBy(routines.constructMap("imperium_id", technologyImperiumList.get(0).getImperium().toString()));
-        List<Technology> technologyList = technologyDAO.findBy(routines.constructMap("technology_id", technologyImperiumList.get(0).getTechnology().toString()));
-        
+        List<Imperium> imperiumList = impDAO.findBy(routines.constructMap("imperium_id", technologyImperiumList.get(0).getImperium().getImperiumId().toString()));
+        List<Technology> technologyList = technologyDAO.findBy(routines.constructMap("technology_id", technologyImperiumList.get(0).getTechnology().getTechnologyId().toString()));
+        System.out.println("technologyImperiumList: "+technologyImperiumList.get(0).toString());
+        System.out.println("imperiumList: "+imperiumList.get(0).toString());
+        System.out.println("technologyList: "+technologyList.get(0).toString());
+        System.out.println("consters de la ciencia: " + imperiumList.get(0).getCientificData().toString() + " + " + technologyList.get(0).getBasicCost().toString());
         if (imperiumList.get(0).getCientificData()>technologyList.get(0).getBasicCost()){
+            technologyImperium.setImperium(technologyImperiumList.get(0).getImperium());
+            technologyImperium.setTechnology(technologyImperiumList.get(0).getTechnology());
             Integer res = technologyImperiumDAO.update(technologyImperium);
-            if (res == 0){
+            System.out.println(res);
+            if (res == 1){
+                Imperium imp = technologyImperiumList.get(0).getImperium();
+                imp.setCientificData(imperiumList.get(0).getCientificData()-technologyList.get(0).getBasicCost());
+                impDAO.update(imp);
                 response = Response.ok(res).build();
             }else{
                 response = Response.notModified("fallo en la actualizacion").build();

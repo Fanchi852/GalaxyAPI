@@ -74,7 +74,8 @@ public class PlanetTypeDAO implements com.apigalaxy.interfaces.IDAO<PlanetType, 
             if (generatedKeys.next()) {
                 res = (int) generatedKeys.getLong(1);
             }
-                    
+            statement.close();
+            connection.close();
         }catch(SQLException ex) {
             Logger.getLogger(PlanetTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -92,6 +93,8 @@ public class PlanetTypeDAO implements com.apigalaxy.interfaces.IDAO<PlanetType, 
             statement.setInt(1, planetType.getPlanetTypeId());
             //ejecutamos la sentencia y almacenamos la respuesta que sear true en caso de no haber habido fallos
             res = statement.execute();
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(PlanetTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -164,7 +167,8 @@ public class PlanetTypeDAO implements com.apigalaxy.interfaces.IDAO<PlanetType, 
                 planetTypes.add(newPlanetType);
                 
             }
-            
+            statement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(PlanetTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -191,6 +195,8 @@ public class PlanetTypeDAO implements com.apigalaxy.interfaces.IDAO<PlanetType, 
             statement.setInt(9, planetType.getPlanetTypeId());
             
             res = statement.executeUpdate();
+            statement.close();
+            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(PlanetTypeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

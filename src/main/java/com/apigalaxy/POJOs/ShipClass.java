@@ -13,21 +13,48 @@ package com.apigalaxy.POJOs;
  */
 public class ShipClass {
     
-    private Integer shipClassId, basicLife, basicShield, basicDamage, basic_normal_cost, basic_rare_cost;
+    private Integer shipClassId, basicLife, basicShield, basicDamage, basic_normal_cost, basic_rare_cost, basic_people_cost, basicStorage, basicSpeed;
     private String name, description, image;
 
     public ShipClass() {
     }
 
-    public ShipClass(Integer basicLife, Integer basicShield, String image, Integer basicDamage, Integer basic_normal_cost, Integer basic_rare_cost, String name, String description) {
+    public ShipClass(Integer basicLife, Integer basicShield, Integer basicDamage, Integer basic_normal_cost, Integer basic_rare_cost, Integer basic_people_cost, Integer basicStorage, Integer basicSpeed, String name, String description, String image) {
         this.basicLife = basicLife;
         this.basicShield = basicShield;
         this.basicDamage = basicDamage;
         this.basic_normal_cost = basic_normal_cost;
         this.basic_rare_cost = basic_rare_cost;
+        this.basic_people_cost = basic_people_cost;
+        this.basicStorage = basicStorage;
+        this.basicSpeed = basicSpeed;
         this.name = name;
         this.description = description;
         this.image = image;
+    }
+
+    public Integer getBasic_people_cost() {
+        return basic_people_cost;
+    }
+
+    public void setBasic_people_cost(Integer basic_people_cost) {
+        this.basic_people_cost = basic_people_cost;
+    }
+
+    public Integer getBasicStorage() {
+        return basicStorage;
+    }
+
+    public void setBasicStorage(Integer basicStorage) {
+        this.basicStorage = basicStorage;
+    }
+
+    public Integer getBasicSpeed() {
+        return basicSpeed;
+    }
+
+    public void setBasicSpeed(Integer basicSpeed) {
+        this.basicSpeed = basicSpeed;
     }
     
     public String getImage() {
@@ -104,8 +131,7 @@ public class ShipClass {
 
     @Override
     public String toString() {
-        return "ShipClass{" + "shipClassId=" + shipClassId + ", basicLife=" + basicLife + ", basicShield=" + basicShield + ", basicDamage=" + basicDamage + ", basic_normal_cost=" + basic_normal_cost + ", basic_rare_cost=" + basic_rare_cost + ", name=" + name + ", description=" + description + ", image=" + image + '}';
+        return "ShipClass{" + "shipClassId=" + shipClassId + ", basicLife=" + basicLife + ", basicShield=" + basicShield + ", basicDamage=" + basicDamage + ", basic_normal_cost=" + basic_normal_cost + ", basic_rare_cost=" + basic_rare_cost + ", basic_people_cost=" + basic_people_cost + ", basicStorage=" + basicStorage + ", basicSpeed=" + basicSpeed + ", name=" + name + ", description=" + description + ", image=" + image + '}';
     }
-
     
 }

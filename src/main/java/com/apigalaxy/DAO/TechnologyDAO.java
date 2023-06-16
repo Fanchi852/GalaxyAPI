@@ -142,7 +142,7 @@ public class TechnologyDAO implements com.apigalaxy.interfaces.IDAO<Technology, 
                 
                 newTechnology.setTechnologyId(res.getInt("technology_id"));
                 newTechnology.setName(res.getString("name"));
-                newTechnology.setDescription(res.getString("description"));
+                newTechnology.setDescription(res.getString("descripcion"));
                 newTechnology.setTechType(res.getString("type"));
                 newTechnology.setBono(res.getFloat("bono"));
                 newTechnology.setBasicCost(res.getInt("basic_cost"));

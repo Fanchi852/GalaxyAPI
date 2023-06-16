@@ -19,13 +19,13 @@ public class Planet {
     private StrongResource strResource;
     private Imperium imperium;
     private PlanetType planetType;
-    private StarSystem Star;
+    private StarSystem star;
     private Resources resources;
 
     public Planet() {
     }
 
-    public Planet(Integer parcels, String coordinates, Integer normalOreProduction, Integer rareOreProduction, Integer population_changes, Integer cientific_data_changes, String name, StrongResource strResource, Imperium imperium, PlanetType planetType, StarSystem Star, Resources resources) {
+    public Planet(Integer parcels, String coordinates, Integer normalOreProduction, Integer rareOreProduction, Integer population_changes, Integer cientific_data_changes, String name, StrongResource strResource, Imperium imperium, PlanetType planetType, StarSystem star, Resources resources) {
         this.parcels = parcels;
         this.coordinates = coordinates;
         this.normalOreProduction = normalOreProduction;
@@ -36,7 +36,7 @@ public class Planet {
         this.strResource = strResource;
         this.imperium = imperium;
         this.planetType = planetType;
-        this.Star = Star;
+        this.star = star;
         this.resources = resources;
     }
 
@@ -49,11 +49,11 @@ public class Planet {
     }
     
     public StarSystem getStar() {
-        return Star;
+        return star;
     }
 
-    public void setStar(StarSystem Star) {
-        this.Star = Star;
+    public void setStar(StarSystem star) {
+        this.star = star;
     }
 
     public PlanetType getPlanetType() {
@@ -165,7 +165,7 @@ public class Planet {
 
     @Override
     public String toString() {
-        return "Planet{" + "planetId=" + planetId + ", parcels=" + parcels + ", coordinates=" + coordinates + ", normalOreProduction=" + normalOreProduction + ", rareOreProduction=" + rareOreProduction + ", population_changes=" + population_changes + ", cientific_data_changes=" + cientific_data_changes + ", name=" + name + ", strResource=" + strResource + ", imperium=" + imperium + ", planetType=" + planetType + ", Star=" + Star + ", resources=" + resources + '}';
+        return "Planet{" + "planetId=" + planetId + ", parcels=" + parcels + ", coordinates=" + coordinates + ", normalOreProduction=" + normalOreProduction + ", rareOreProduction=" + rareOreProduction + ", population_changes=" + population_changes + ", cientific_data_changes=" + cientific_data_changes + ", name=" + name + ", strResource=" + strResource + ", imperium=" + imperium + ", planetType=" + planetType + ", star=" + star + ", resources=" + resources + '}';
     }
     
             
