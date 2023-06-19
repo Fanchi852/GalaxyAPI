@@ -26,7 +26,7 @@ public class RestResources {
     @Path("/traderesources")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findplanets(TradeResources tradeResources) {
+    public Response tradeResources(TradeResources tradeResources) {
         System.out.println("transaccion entgrante: "+tradeResources.toString());
         ResourcesDAO resDAO = new ResourcesDAO();
         Response response;

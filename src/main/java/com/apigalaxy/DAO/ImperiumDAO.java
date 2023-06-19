@@ -156,8 +156,6 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
                 imperiums.add(newImperium);
                 
             }
-            statement.close();
-            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(ImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -180,8 +178,6 @@ public class ImperiumDAO implements com.apigalaxy.interfaces.IDAO<Imperium, Map<
             statement.setInt(5, imperium.getImperiumId());
             
             res = statement.executeUpdate();
-            statement.close();
-            connection.close();
         } catch (SQLException ex){
             Logger.getLogger(ImperiumDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
